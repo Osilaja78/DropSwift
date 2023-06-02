@@ -19,15 +19,18 @@ async def add_product(request: schemas.Products, db: Session = Depends(get_db),
     user: schemas.Users = Depends(get_current_user)):
 
     category = db.query(models.ProductCategory).filter(models.ProductCategory.name == request.category).first()
-    cat_id = category.category_id
 
-    if not cat_id:
+    if not category:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-            detail="Product category {request.category} not found. Please use a valid category or add this new category to record.")
+            detail=f"Product category '{request.category}' not found. Please use a valid category or add this new category to record.")
+    
+    cat_id = category.category_id
+    print(cat_id)
+    
     try:
         product = models.Products(product_id=str(uuid4()), product_name=request.product_name,
                     description=request.description, price=request.price, rating=request.rating,
-                    main_image_url=request.main_image_url, image_one_url=request.image_one_url,
+                    category=request.category, main_image_url=request.main_image_url, image_one_url=request.image_one_url,
                     image_two_url=request.image_two_url, image_three_url=request.image_three_url)
         
         db.add(product)

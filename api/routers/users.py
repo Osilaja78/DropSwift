@@ -8,6 +8,9 @@ from jose import jwt
 from api import models
 from dotenv import load_dotenv
 from api import schemas
+from api.routers.auth import get_current_user
+from datetime import datetime
+from sqlalchemy.orm import joinedload
 from uuid import uuid4
 import os
 
@@ -21,7 +24,11 @@ ALGORITHM = os.getenv('ALGORITHM')
 # Get all users from the database
 @router.get('/user')
 async def all_users(db: Session = Depends(get_db)):
-    users = db.query(models.User).all()
+    users = db.query(models.User).options(
+        joinedload(models.User.details),
+        joinedload(models.User.cart),
+        joinedload(models.User.orders)
+        ).all()
 
     return users
 
@@ -96,3 +103,62 @@ async def get_user(id: int, db: Session = Depends(get_db)):
                 detail=f"User with id {id} not found")
 
     return user
+
+# Add user details to the database.
+@router.post('/user-details')
+async def add_user_details(request: schemas.UserDetails, db: Session = Depends(get_db),
+                           user: schemas.Users = Depends(get_current_user)):
+    
+    user_id = db.query(models.UserDetails).filter(models.User.id == user.id).first()
+    if not user_id:
+        try:
+            details = models.UserDetails(
+                user=user, phone=request.phone, address_one=request.address_one,
+                address_two=request.address_two, city=request.city, postal_code=request.postal_code,
+                created_at=datetime.utcnow(), updated_at=datetime.utcnow()
+            )
+
+            db.add(details)
+            db.commit()
+            db.refresh(details)
+            db.close()
+        except Exception as e:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                    detail=f"Exception: {e}")
+        return details
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                    detail=f"User details already exist!")
+
+# Update user details in the database.
+@router.put('/user-details')
+async def update_user_details(request: schemas.UserDetails, db: Session = Depends(get_db),
+                           user: schemas.Users = Depends(get_current_user)):
+    
+    user = db.query(models.UserDetails).filter(models.User.id == user.id).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            details="User not found."
+        )
+    try:
+        # details = models.UserDetails(
+        #     user=user, phone=request.phone, address_one=request.address_one,
+        #     address_two=request.address_two, city=request.city, postal_code=request.postal_code,
+        #     updated_at=datetime.utcnow()
+        # )
+        user=user
+        user.phone = request.phone
+        user.address_one = request.address_one
+        user.address_two=request.address_two
+        user.city=request.city
+        user.postal_code=request.postal_code
+        user.updated_at=datetime.utcnow()
+
+        db.commit()
+        # db.close()
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                detail=f"Exception: {e}")
+    return {"message" : "User details updated successfully!"}

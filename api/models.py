@@ -13,8 +13,8 @@ class User(Base):
     password = Column(String(50))
     is_verified = Column(Boolean, default=False)
 
-    orders = relationship("Orders", back_populates="user_id")
-    cart = relationship("Cart", back_populates="product")
+    orders = relationship("Orders", back_populates="user")
+    cart = relationship("Cart", back_populates="user")
     details = relationship("UserDetails", back_populates="user")
 
 class UserDetails(Base):
@@ -25,7 +25,7 @@ class UserDetails(Base):
     address_one = Column(String(2000))
     address_two = Column(String(2000))
     city = Column(String(2000))
-    postal_code = Column(String(2000))
+    postal_code = Column(Integer)
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
 
@@ -41,7 +41,7 @@ class Orders(Base):
     no_of_orders = Column(Integer)
     order_status = Column(String(50))
 
-    user_id = relationship("User", back_populates="orders")
+    user = relationship("User", back_populates="orders")
     product = relationship("Products", back_populates="orders")
 
 class Products(Base):
@@ -52,33 +52,35 @@ class Products(Base):
     description = Column(String(2000))
     price = Column(String(50))
     rating = Column(Integer)
-    category = Column(String(80), ForeignKey('ProductCategory.category_id'))
+    category = Column(String(80), ForeignKey('ProductCategory.name'))
     main_image_url = Column(String(300))
     image_one_url = Column(String(300))
     image_two_url = Column(String(300))
     image_three_url = Column(String(300))
 
     orders = relationship("Orders", back_populates="product")
-    cat_value = relationship("ProductCategory", back_populates="cat")
+    cat_value = relationship("ProductCategory", back_populates="products")
 
 class ProductCategory(Base):
     __tablename__ = "ProductCategory"
 
     category_id = Column(String(80), primary_key=True, index=True)
-    name = Column(String(100))
+    name = Column(String(100), unique=True)
     description = Column(String(1000))
     created_at = Column(DateTime(timezone=True))
     updated_at = Column(DateTime(timezone=True))
 
-    cat = relationship("Products", back_populates="cat_value")
+    products = relationship("Products", back_populates="cat_value")
 
 class Cart(Base):
     __tablename__ = "Cart"
 
+    cart_id = Column(String(80), primary_key=True, index=True)
     customer_id = Column(String(80), ForeignKey('User.id'))
-    product_id = Column(String(80), ForeignKey('Products.product_id'), primary_key=True)
+    product_id = Column(String(80), ForeignKey('Products.product_id'))
 
-    product = relationship("User", back_populates="cart")
+    user = relationship("User", back_populates="cart")
+    product = relationship("Products")
 
 # Password reset model
 class PasswordReset(Base):

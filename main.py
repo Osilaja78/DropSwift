@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.routers import users, auth, products
+from api.routers import users, auth, products, category, cart
 from fastapi.middleware.cors import CORSMiddleware
 from api import models
 from api.database import engine
@@ -35,6 +35,8 @@ def index():
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(products.router)
+app.include_router(category.router)
+app.include_router(cart.router)
 
 # Run uvicorn server
 if __name__ == "__main__":

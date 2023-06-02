@@ -10,16 +10,19 @@ router = APIRouter(tags=['Category'])
 
 # Get all categories from the database
 @router.get('/category')
-async def all_categories(db: Session = Depends(get_db)):
-    categories = db.query(models.ProductCategory).all()
+async def all_categories(db: Session = Depends(get_db), user: schemas.Users = Depends(get_current_user)):
+    try:
+        categories = db.query(models.ProductCategory).all()
 
-    return categories
+        return categories
+    except Exception as e:
+        return f"The exception: {e}"
 
 # Add a category to the database
 @router.post('/category')
 async def add_category(request: schemas.Category, db: Session = Depends(get_db),
                        user: schemas.Users = Depends(get_current_user)):
-    
+
     try:
         category = models.ProductCategory(category_id=str(uuid4()), name=request.name,
                                         description=request.description, created_at=datetime.utcnow(),
@@ -34,6 +37,7 @@ async def add_category(request: schemas.Category, db: Session = Depends(get_db),
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Couldn't add category. Please try again!",
         )
+    return "Successful!"
 
 # Remove a category from the database
 @router.delete('/category/{category_id}')
