@@ -17,6 +17,16 @@ class User(Base):
     cart = relationship("Cart", back_populates="user")
     details = relationship("UserDetails", back_populates="user")
 
+class Admin(Base):
+    __tablename__ = "Admin"
+
+    id = Column(String(80), primary_key=True, index=True)
+    first_name = Column(String(50))
+    last_name = Column(String(50))
+    email = Column(String(50), unique=True)
+    password = Column(String(50))
+    is_admin = Column(Boolean, default=False)
+
 class UserDetails(Base):
     __tablename__ = "UserDetails"
 
@@ -50,13 +60,14 @@ class Products(Base):
     product_id = Column(String(80), primary_key=True, index=True)
     product_name = Column(String(200))
     description = Column(String(2000))
-    price = Column(String(50))
+    price = Column(Integer)
     rating = Column(Integer)
     category = Column(String(80), ForeignKey('ProductCategory.name'))
     main_image_url = Column(String(300))
     image_one_url = Column(String(300))
     image_two_url = Column(String(300))
     image_three_url = Column(String(300))
+    date_added = Column(DateTime(timezone=True))
 
     orders = relationship("Orders", back_populates="product")
     cat_value = relationship("ProductCategory", back_populates="products")

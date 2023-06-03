@@ -94,8 +94,13 @@ async def add_user(request: schemas.Users, db: Session = Depends(get_db)):
 
 # Get a specific user from the database
 @router.get('/user/{id}')
-async def get_user(id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == id).first()
+async def get_user(id: str, db: Session = Depends(get_db)):
+
+    user = db.query(models.User).filter(models.User.id == id).options(
+            joinedload(models.User.details),
+            joinedload(models.User.cart),
+            joinedload(models.User.orders)
+        ).first()
 
     # Raise an exception if user with enetered id does not exist
     if not user:
@@ -132,29 +137,32 @@ async def add_user_details(request: schemas.UserDetails, db: Session = Depends(g
 
 # Update user details in the database.
 @router.put('/user-details')
-async def update_user_details(request: schemas.UserDetails, db: Session = Depends(get_db),
+async def update_user_details(phone: str = None, address_one: str = None, address_two: str = None,
+                              city: str = None, postal_code: int = None, db: Session = Depends(get_db),
                            user: schemas.Users = Depends(get_current_user)):
     
-    user = db.query(models.UserDetails).filter(models.User.id == user.id).first()
+    user_details =  db.query(models.UserDetails).filter(models.User.id == user.id).first()
+    print(user_details.phone)
+    print(user)
 
-    if not user:
+    if not user_details:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             details="User not found."
         )
     try:
-        # details = models.UserDetails(
-        #     user=user, phone=request.phone, address_one=request.address_one,
-        #     address_two=request.address_two, city=request.city, postal_code=request.postal_code,
-        #     updated_at=datetime.utcnow()
-        # )
         user=user
-        user.phone = request.phone
-        user.address_one = request.address_one
-        user.address_two=request.address_two
-        user.city=request.city
-        user.postal_code=request.postal_code
-        user.updated_at=datetime.utcnow()
+        if phone:
+            user_details.phone = phone
+        if address_one:
+            user_details.address_one = address_one
+        if address_two:
+            user_details.address_two = address_two
+        if city:
+            user_details.city = city
+        if postal_code:
+            user_details.postal_code = postal_code
+        user_details.updated_at=datetime.utcnow()
 
         db.commit()
         # db.close()

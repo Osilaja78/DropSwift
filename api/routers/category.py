@@ -1,16 +1,25 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from api.routers.auth import get_current_user
+from api.routers.auth import get_current_user, get_current_admin
 from sqlalchemy.orm import Session
 from api.database import get_db
 from api import models, schemas
 from uuid import uuid4
 from datetime import datetime
 
-router = APIRouter(tags=['Category'])
+router = APIRouter(tags=['Category (Admin)'])
+
+unauthorized = HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=f"You're not authorized to perform this action!"
+            )
 
 # Get all categories from the database
 @router.get('/category')
-async def all_categories(db: Session = Depends(get_db), user: schemas.Users = Depends(get_current_user)):
+async def all_categories(db: Session = Depends(get_db), user: schemas.Users = Depends(get_current_admin)):
+
+    if user.is_admin == False:
+        raise unauthorized
+
     try:
         categories = db.query(models.ProductCategory).all()
 
@@ -21,7 +30,10 @@ async def all_categories(db: Session = Depends(get_db), user: schemas.Users = De
 # Add a category to the database
 @router.post('/category')
 async def add_category(request: schemas.Category, db: Session = Depends(get_db),
-                       user: schemas.Users = Depends(get_current_user)):
+                       user: schemas.Users = Depends(get_current_admin)):
+
+    if user.is_admin == False:
+        raise unauthorized
 
     try:
         category = models.ProductCategory(category_id=str(uuid4()), name=request.name,
@@ -41,7 +53,11 @@ async def add_category(request: schemas.Category, db: Session = Depends(get_db),
 
 # Remove a category from the database
 @router.delete('/category/{category_id}')
-async def delete_category(category_id: int, db: Session = Depends(get_db)):
+async def delete_category(category_id: int, db: Session = Depends(get_db),
+                          user: schemas.Users = Depends(get_current_admin)):
+
+    if user.is_admin == False:
+        raise unauthorized
 
     category = db.query(models.ProductCategory).filter(
         models.ProductCategory.category_id == category_id).first()

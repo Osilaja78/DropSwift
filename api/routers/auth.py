@@ -22,6 +22,11 @@ oauth2_scheme = OAuth2PasswordBearer(
         scheme_name="JWT"
     )
 
+password_exception = HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, 
+                detail="Email or password incorrect!"
+            )
+
 load_dotenv()
 SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
@@ -36,35 +41,87 @@ async def login(request: OAuth2PasswordRequestForm = Depends(),
         models.User.email == request.username
     ).first()
 
-    # If user or password does not exist, return an error
+    # If user does not exist, check if admin exist
     if not user:
+        admin = db.query(models.Admin).filter(
+            models.Admin.email == request.username
+        ).first()
+
+    # If user or password does not exist, return an error
+    if not user and not admin:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
             detail="User with email does not exist!"
         )
-    
-    # Verify the user's password
-    password = verify_password(request.password, user.password)
 
-    if not password:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, 
-            detail="Email or password incorrect!"
-        )
+    if user:
+        # Verify the user's password
+        password = verify_password(request.password, user.password)
 
-    # Check if their account is verified, if not, they cannot login
-    if user.is_verified == False:
-        return {
-            "message": "Please verify your account before logging in!"
-        }
+        if not password:
+            raise password_exception
+
+        # Check if their account is verified, if not, they cannot login
+        if user.is_verified == False:
+            return {
+                "message": "Please verify your account before logging in!"
+            }
+    elif admin:
+        password = verify_password(request.password, admin.password)
+
+        if not password:
+            raise password_exception
+        
+        # Check if the admin account is verified, if not, they cannot login
+        if admin.is_admin == False:
+            return {
+                "message": "Please wait to be verified before logging in!"
+            }
 
     # Generate an access token for the user
     access_token_expires = timedelta(minutes=float(ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
+        data={"sub": user.email if user else admin.email}, expires_delta=access_token_expires
     )
 
-    return {"user": user, "access_token": access_token}
+    return {"user": user if user else admin, "access_token": access_token}
+
+# Admin login
+@router.post('/admin/admin-login')
+async def login(request: OAuth2PasswordRequestForm = Depends(), 
+                db: Session = Depends(get_db)):
+    
+    # Check if admin exists
+    admin = db.query(models.Admin).filter(
+            models.Admin.email == request.username
+        ).first()
+    
+    # If admin or password does not exist, return an error
+    if not admin:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="Admin with email does not exist!"
+        )
+    
+    if admin:
+        password = verify_password(request.password, admin.password)
+
+        if not password:
+            raise password_exception
+        
+        # Check if the admin account is verified, if not, they cannot login
+        if admin.is_admin == False:
+            return {
+                "message": "Please wait to be verified before logging in!"
+            }
+        
+    # Generate an access token for the admin
+    access_token_expires = timedelta(minutes=float(ACCESS_TOKEN_EXPIRE_MINUTES))
+    access_token = create_access_token(
+        data={"sub": admin.email}, expires_delta=access_token_expires
+    )
+
+    return {"user": admin, "access_token": access_token}
 
 # Route for account verification
 # it verifies users access token sent via email.
@@ -191,7 +248,7 @@ async def finalize_password_reset(
     }
 
 
-# This function is for protected routes.
+# This function is for users protected routes.
 #   It validates user's access token to determine 
 #   if they can access protected routes
 def get_current_user(token: str = Depends(oauth2_scheme),
@@ -225,6 +282,48 @@ def get_current_user(token: str = Depends(oauth2_scheme),
             detail="Could not find user!"
         )
     return user
+
+# This function is for admins protected routes.
+#   It validates admin's access token to determine 
+#   if they can access protected routes
+def get_current_admin(token: str = Depends(oauth2_scheme),
+                        db: Session = Depends(get_db)) -> models.User:
+
+    # Exception to be raised if the token or user is not valid
+    credentials_exception = HTTPException(
+        status_code=401,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    # Decode the access token to see if it is valid
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM],
+            options={"verify_aud": False},
+        )
+        # Get user email from the payload
+        user_email: str = payload.get("sub")
+    except JWTError:
+        raise credentials_exception
+
+    # Validate if the admin actually exists in the database
+    admin = db.query(models.Admin).filter(models.Admin.email == user_email).first()
+    if admin is None:
+        user = db.query(models.User).filter(models.User.email == user_email).first()
+        if user:
+            raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You're not authorized to perform this action!"
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Could not find user!"
+            )
+    return admin
 
 # Email template for password reset
 async def send_reset_email(url: str, user, request):

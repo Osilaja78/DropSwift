@@ -11,6 +11,13 @@ class Users(BaseModel):
     class Config():
         orm_mode = True
 
+class Admin(BaseModel):
+    first_name: str
+    last_name: str
+    email: EmailStr
+    password: str
+    confirm_password: str
+
 class UserDetails(BaseModel):
     phone: str
     address_one: str
@@ -24,7 +31,7 @@ class UserDetails(BaseModel):
 class Products(BaseModel):
     product_name: str
     description: str
-    price: str
+    price: int
     rating: int
     category: str
     main_image_url: str
