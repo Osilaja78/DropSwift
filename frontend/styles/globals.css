@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-main {
+    background-image: linear-gradient(to right top, #819fba, #6b88a3, #55718d, #3f5c78, #2a4763, #224062, #1b3960, #17315d, #2d316a, #472e73, #642576, #811073);
+    /* background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); */
+}
+
+.centered-div {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+  
