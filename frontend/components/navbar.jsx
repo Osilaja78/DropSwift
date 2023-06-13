@@ -1,4 +1,5 @@
-import React from 'react';
+"use client"
+import {React, useState} from 'react';
 import Image from 'next/image';
 import Logo from '../public/logo.svg';
 import Arrow from '../public/arrow-down.svg';
@@ -7,6 +8,21 @@ import Help from '../public/help.svg';
 import Search from '../public/search-icon.svg';
 
 export default function Navbar() {
+
+    const [account, setAccount] = useState(false)
+
+    const handleAccountClick = () => {
+        setAccount(!account);
+    }
+
+    let AccountComponent = <div className='absolute bg-white rounded-lg text-black top-12 right-32 p-5 text-[17px]'>
+        <ul>
+            <li className='text-center bg-[#0C2D48] text-white rounded-md px-3 py-2'>Login</li>
+            <hr className='my-5'/>
+            <li>Dashboard</li>
+        </ul>
+    </div>
+
     return (
         <>
             <nav className='flex justify-between items-center mx-32 my-8 text-white'>
@@ -27,11 +43,12 @@ export default function Navbar() {
                         <li>Categories</li>
                         <Image className='mt-2 cursor-pointer' src={Arrow} />
                     </div>
-                    <div className='flex gap-3 items-center cursor-pointer'>
+                    <div onClick={handleAccountClick} className='flex gap-3 items-center cursor-pointer'>
                         <Image className='mt-2' src={Accounts} />
                         <li>Account</li>
                         <Image className='mt-2' src={Arrow} />
                     </div>
+                    {account ? AccountComponent : ''}
                     <div className='flex gap-3 items-center cursor-pointer'>
                         <Image className='mt-2' src={Help} />
                         <li>Help</li>

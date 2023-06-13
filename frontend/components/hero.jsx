@@ -1,5 +1,5 @@
 import React from "react";
-import '../styles/globals.css'
+import '../styles/globals.css';
 
 const HeroSection = () => {
   return (
@@ -15,6 +15,7 @@ const HeroSection = () => {
 				</p>
 				<button className="p-5 bg-white rounded-[45px] text-gray-700 text-2xl font-[510] mt-6">Start Shopping</button>
 			</div>
+			
         </div>
     </>
   );
