@@ -1,5 +1,5 @@
 import Footer from "@/components/footer"
-import Navbar from "@/components/navbar"
+import Navbar from "@/components/homeNavbar"
 
 export const metadata = {
   title: 'DropSwift',
@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
  return (
     <html lang="en">
       <body>
-        <Navbar />
+        {/* <Navbar /> */}
         {children}
         <Footer />
       </body>

@@ -5,13 +5,14 @@ import BestSelling from '@/components/products/bestSellingSection';
 import FeaturedProducts from '@/components/products/featuredSection';
 import EverydayEssentials from '@/components/products/everydayEssentialsSection';
 import SpecialOffer from '@/components/products/specialOffer';
-import Footer from '@/components/footer';
 import Image from 'next/image';
-import OfferStar from '../public/offer-star.svg'
+import OfferStar from '../public/offer-star.svg';
+import HomeNavbar from '@/components/homeNavbar';
 
 export default function Home() {
     return (
         <>
+            <HomeNavbar />
             <HeroSection />
             <section className='flex w-[80%] justify-between mx-auto my-10'>
                 <div className='max-w-[550px] mt-20'>

@@ -25,36 +25,38 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className='flex justify-between items-center mx-32 my-8 text-white'>
-                <div className='flex gap-8 items-center'>
-                    <Image src={Logo} />
-                    <h1 className='text-3xl'>DropSwift</h1>
-                </div>
-                <div className='bg-white px-5 py-3 w-[500px] rounded-3xl text-black'>
-                    <form action="" className='flex justify-between items-center'>
-                        <input type="search" name="search" id="search" placeholder='Search Products' className='border-none outline-none w-full' />
-                        <div className='bg-gray-300 rounded-full p-2'>
-                            <Image className='cursor-pointer' src={Search} />
+            <div className='bg-main'>
+                <nav className='flex justify-between items-center mx-32 py-3 text-white'>
+                    <div className='flex gap-8 items-center'>
+                        <Image src={Logo} />
+                        <h1 className='text-3xl'>DropSwift</h1>
+                    </div>
+                    <div className='bg-white px-5 py-3 w-[500px] rounded-3xl text-black'>
+                        <form action="" className='flex justify-between items-center'>
+                            <input type="search" name="search" id="search" placeholder='Search Products' className='border-none outline-none w-full' />
+                            <div className='bg-gray-300 rounded-full p-2'>
+                                <Image className='cursor-pointer' src={Search} />
+                            </div>
+                        </form>
+                    </div>
+                    <ul className='flex relative gap-10 text-2xl'>
+                        <div className='flex gap-3 items-center cursor-pointer'>
+                            <li>Categories</li>
+                            <Image className='mt-2 cursor-pointer' src={Arrow} />
                         </div>
-                    </form>
-                </div>
-                <ul className='flex relative gap-10 text-2xl'>
-                    <div className='flex gap-3 items-center cursor-pointer'>
-                        <li>Categories</li>
-                        <Image className='mt-2 cursor-pointer' src={Arrow} />
-                    </div>
-                    <div onClick={handleAccountClick} className='flex gap-3 items-center cursor-pointer'>
-                        <Image className='mt-2' src={Accounts} />
-                        <li>Account</li>
-                        <Image className='mt-2' src={Arrow} />
-                    </div>
-                    {account ? AccountComponent : ''}
-                    <div className='flex gap-3 items-center cursor-pointer'>
-                        <Image className='mt-2' src={Help} />
-                        <li>Help</li>
-                    </div>
-                </ul>
-            </nav>
+                        <div onClick={handleAccountClick} className='flex gap-3 items-center cursor-pointer'>
+                            <Image className='mt-2' src={Accounts} />
+                            <li>Account</li>
+                            <Image className='mt-2' src={Arrow} />
+                        </div>
+                        {account ? AccountComponent : ''}
+                        <div className='flex gap-3 items-center cursor-pointer'>
+                            <Image className='mt-2' src={Help} />
+                            <li>Help</li>
+                        </div>
+                    </ul>
+                </nav>
+            </div>
         </>
     )
 }

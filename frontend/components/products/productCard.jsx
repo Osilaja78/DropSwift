@@ -12,7 +12,9 @@ const ProductCard = ({ image, name, stars, price }) => {
 
     return (
         <div className="cursor-pointer">
-            <Image src={image} alt={name} className='bg-gray-100 rounded-3xl max-w-[200px] px-6 py-12'/>
+            <div className='bg-gray-100 rounded-3xl w-[200px] h-[200px] px-6 py-12'>
+                <Image src={image} alt={name} className=''/>
+            </div>
             <h2 className='text-[18px] py-2 px-2'>{name}</h2>
             <div className="stars flex px-2">{starElements}</div>
             <div className="price pt-2 text-[15px] px-2">${price}</div>
