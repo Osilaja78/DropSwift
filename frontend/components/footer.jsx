@@ -9,7 +9,7 @@ export default function Footer() {
                 <div className="grid grid-cols-5 w-[90%] m-auto py-20">
                     <div className='flex flex-col gap-8 items-center col-span-2'>
                         <div className="flex items-center">
-                            <Image src={Logo} />
+                            <Image src={Logo} alt="logo"/>
                             <h1 className='text-3xl'>DropSwift</h1>
                         </div>
                         <p>

@@ -28,9 +28,9 @@ export default function Products() {
                     <div className="flex justify-between">
                         <p className="text-[20px]">Search results for "Electronics".</p>
                         <div className="text-[16px]">
-                            <label for="sort" className="text-[19px] p-5">Sort By:</label>
+                            <label htmlFor="sort" className="text-[19px] p-5">Sort By:</label>
 
-                            <select id="sort" className="border border-gray-300 rounded-2xl p-3 cursor-pointer">
+                            <select id="sort" className="border border-gray-300 bg-gray-50 rounded-2xl p-3 cursor-pointer">
                                 <option value="volvo">Recently Added</option>
                                 <option value="saab">Lowest Price</option>
                                 <option value="opel">Highest Price</option>
@@ -38,7 +38,79 @@ export default function Products() {
                             </select> 
                         </div>
                     </div>
-                    <div className="flex gap-5">
+                    <div className="flex flex-wrap gap-4 mt-10">
+                        <ProductCard 
+                            image={ProductCharger}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductSpinner}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductCharger}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductSpinner}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductCharger}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductSpinner}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductCharger}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductSpinner}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductCharger}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductSpinner}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductCharger}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
+                        <ProductCard 
+                            image={ProductSpinner}
+                            name="Flying Fidget Spinner"
+                            stars={4.5}
+                            price={19.99}
+                        />
                         <ProductCard 
                             image={ProductCharger}
                             name="Flying Fidget Spinner"
