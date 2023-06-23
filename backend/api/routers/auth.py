@@ -12,6 +12,8 @@ from dotenv import load_dotenv
 from datetime import datetime
 from api import schemas
 from uuid import uuid4
+from google.auth.transport import requests
+from google.oauth2 import id_token
 import os
 
 
@@ -31,6 +33,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 
 # User login route
 @router.post('/auth/login')
@@ -85,6 +88,79 @@ async def login(request: OAuth2PasswordRequestForm = Depends(),
     )
 
     return {"user": user if user else admin, "access_token": access_token}
+
+# google login and signup.
+@router.post("/auth/google-login")
+async def google_login(token: str, db: Session = Depends(get_db)):
+    try:
+        # Verify the ID token
+        user = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
+        name = user['name']
+        email = user['email']
+
+        # Check if the user exists
+        current_user = db.query(models.User).filter(
+            models.User.email == email
+        ).first()
+
+        if current_user:
+            # Check if their account is verified, if not, they cannot login
+            if current_user.is_verified == False:
+                return {
+                    "message": "Please verify your account before logging in!"
+                }
+            access_token_expires = timedelta(minutes=float(ACCESS_TOKEN_EXPIRE_MINUTES))
+            access_token = create_access_token(
+                data={"sub": current_user.email}, expires_delta=access_token_expires
+            )
+
+            return {"user": current_user, "access_token": access_token}
+        
+        # If user does not exist (that is new user)
+        new_user = models.User(id=str(uuid4()), first_name=name, last_name=name, 
+                    email=email)
+        
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        db.close()
+
+        access_token_expires = timedelta(minutes=float(ACCESS_TOKEN_EXPIRE_MINUTES))
+        access_token = create_access_token(
+            data={"sub": new_user.email}, expires_delta=access_token_expires
+        )
+
+        content = f"""
+            <html>
+            <body>
+                <b>Hi {new_user.first_name}</b></br>
+                <p>
+                    Welcome to <b>DropSwift</b>, thanks for being part 
+                    of the community 🥰.
+                </p>
+                <p>
+                    Now that you're registered, you cna go ahead and explore
+                    the variety of products we have waiting for you.
+                </p>
+                <p>
+                    We're awaiting your first order. Lovely ❤.
+                </p>
+        
+            </body>
+            </html>
+        """
+
+        await send_mail(email=new_user.email, content=content)
+
+        return {"user": current_user, "access_token": access_token}
+
+    except ValueError:
+        raise HTTPException(status_code=401, detail='Invalid token')
+    except HTTPException as e:
+        raise e
+    except Exception as f:
+        raise HTTPException(status_code=500, detail=f'Internal Server Error, {f}')
+        
 
 # Admin login
 @router.post('/admin/admin-login')

@@ -35,8 +35,8 @@ async def all_users(db: Session = Depends(get_db)):
 # Add users to the database (User registration). CHECK HERE *****************
 @router.post('/user')
 async def add_user(request: schemas.Users, db: Session = Depends(get_db)):
-    try:
-        if request.password == request.confirm_password:
+    if request.password == request.confirm_password:
+        try:
             user = models.User(id=str(uuid4()), first_name=request.first_name, last_name=request.last_name, 
                     email=request.email, password=password_hash(request.password))
 
@@ -44,17 +44,16 @@ async def add_user(request: schemas.Users, db: Session = Depends(get_db)):
             db.commit()
             db.refresh(user)
             db.close()
-        else:
-            return {"error": "Confirm password does not match!"}
-            # raise HTTPException(
-            #     status_code=status.HTTP_400_BAD_REQUEST,
-            #     detail="Confirm password does not match!"
-            # )
-    # ************************ CHECK HERE **********************************
-    except (Exception, exc.IntegrityError) as e:
+        # ************************ CHECK HERE **********************************
+        except Exception:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"User with email already exist!",
+            )
+    else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"User with email already exist! {e}",
+            detail="Confirm password does not match!"
         )
 
     token_data = {
