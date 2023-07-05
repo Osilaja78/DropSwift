@@ -1,25 +1,25 @@
 "use client"
 import React, { useEffect, useState, useContext } from "react";
-import "../../styles/globals.css";
+import "../../../styles/globals.css"
 import Navbar from "@/components/navbar";
 import ProductCard from "@/components/products/productCard";
-import ProductCharger from "../../public/product-charger.png";
-import ProductSpinner from "../../public/product-spinner.png";
+import ProductCharger from "../../../public/product-charger.png";
+import ProductSpinner from "../../../public/product-spinner.png";
 import Lottie from "lottie-react";
-import cartLoader from "../../public/cart-loader";
+import cartLoader from "../../../public/cart-loader";
 import { AuthContext } from "@/components/auth/AuthContext";
 import { getProducts } from "@/apis";
 import CategoriesComponent from "@/components/categoriesComponent";
 
-export default function Products() {
+export default function ProductsCategories({catName}) {
 
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState(null);
 
-    const { categories, setCategories } = useContext(AuthContext);
-
-    const queries = ([]);
+    const queries = ([
+        {key: "category", value: catName}
+    ]);
 
     const handleFilterChange = (e) => {
         setFilter(e.target.value);
@@ -45,7 +45,6 @@ export default function Products() {
             setLoading(true);
             try {
                 const res = await getProducts(params);
-                console.log(res);
                 const productData = res;
                 setProducts(productData);
                 setLoading(false);
@@ -78,7 +77,7 @@ export default function Products() {
                 </div>
                 <div className="col-span-3">
                     <div className="flex justify-between">
-                        <p className="text-[20px]">Search results for "Electronics".</p>
+                        <p className="text-[20px]">Products in the category "{catName}".</p>
                         <div className="text-[16px]">
                             <label htmlFor="sort" className="text-[19px] p-5">Sort By:</label>
 

@@ -40,10 +40,10 @@ async def add_to_cart(request: schemas.Cart, db: Session = Depends(get_db),
         return f"Exception: {e}"
     
     # return {"cart": cart, "product": cart.product, "user": cart.user}
-    return {"messge": "Successfully added to cart!"}
+    return {"message": "Successfully added to cart!"}
 
 # Delete product from cart
-@router.delete('/add-to-cart')
+@router.post('/delete-from-cart')
 async def remove_product_from_cart(request: schemas.Cart, db: Session = Depends(get_db),
     user: schemas.Users = Depends(get_current_user)):
 

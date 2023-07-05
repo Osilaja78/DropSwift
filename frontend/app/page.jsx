@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles/globals.css';
 import HeroSection from '@/components/hero';
 import BestSelling from '@/components/products/bestSellingSection';
@@ -8,6 +7,8 @@ import SpecialOffer from '@/components/products/specialOffer';
 import Image from 'next/image';
 import OfferStar from '../public/offer-star.svg';
 import HomeNavbar from '@/components/homeNavbar';
+import { AuthContext } from '@/components/auth/AuthContext';
+import Link from 'next/link';
 
 export default function Home() {
     return (
@@ -21,7 +22,7 @@ export default function Home() {
                     and let us handle the rest. Say goodbye to traditional hassles 
                     and say hello to effortless shopping.
                     </p>
-                    <button className="p-5 bg-[#0C2D48] rounded-[45px] text-white text-2xl font-[510] mt-6">Explore</button>
+                    <Link href="/products"><button className="p-5 bg-[#0C2D48] rounded-[45px] text-white text-2xl font-[510] mt-6">Explore</button></Link>
                 </div>
                 <div className='flex gap-10'>
                     <div className='flex flex-col gap-5'>

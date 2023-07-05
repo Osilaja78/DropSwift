@@ -2,6 +2,7 @@ import Footer from "@/components/footer"
 import Navbar from "@/components/homeNavbar"
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from "@/components/auth/AuthContext";
 
 const toastParams = {
     position: "top-right",
@@ -25,12 +26,14 @@ export const metadata = {
  
 export default function RootLayout({ children }) {
  return (
-    <html lang="en">
-      <body>
-        {/* <Navbar /> */}
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <body>
+          {/* <Navbar /> */}
+          {children}
+          <Footer />
+        </body>
+      </html>
+    </AuthProvider>
   )
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import '../styles/globals.css';
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -13,7 +14,7 @@ const HeroSection = () => {
 				At DropSwift, we bring you an exceptional e-commerce experience 
 				that combines quality products with the power of dropshipping.
 				</p>
-				<button className="p-5 bg-white rounded-[45px] text-gray-700 text-2xl font-[510] mt-6">Start Shopping</button>
+				<Link href="/products"><button className="p-5 bg-white rounded-[45px] text-gray-700 text-2xl font-[510] mt-6">Start Shopping</button></Link>
 			</div>
 			
         </div>

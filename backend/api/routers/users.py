@@ -26,8 +26,8 @@ ALGORITHM = os.getenv('ALGORITHM')
 async def all_users(db: Session = Depends(get_db)):
     users = db.query(models.User).options(
         joinedload(models.User.details),
-        joinedload(models.User.cart),
-        joinedload(models.User.orders)
+        joinedload(models.User.cart).joinedload(models.Cart.product),
+        joinedload(models.User.orders).joinedload(models.Orders.product),
         ).all()
 
     return users
@@ -92,19 +92,21 @@ async def add_user(request: schemas.Users, db: Session = Depends(get_db)):
     }
 
 # Get a specific user from the database
-@router.get('/user/{id}')
-async def get_user(id: str, db: Session = Depends(get_db)):
+@router.get('/user/')
+async def get_user(id: str = None, db: Session = Depends(get_db),
+                   user: schemas.Users = Depends(get_current_user)):
 
-    user = db.query(models.User).filter(models.User.id == id).options(
-            joinedload(models.User.details),
-            joinedload(models.User.cart),
-            joinedload(models.User.orders)
-        ).first()
+    if id:
+        user = db.query(models.User).filter(models.User.id == id).options(
+                joinedload(models.User.details),
+                joinedload(models.User.cart).joinedload(models.Cart.product),
+                joinedload(models.User.orders).joinedload(models.Orders.product)
+            ).first()
 
     # Raise an exception if user with enetered id does not exist
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
-                detail=f"User with id {id} not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"User not found")
 
     return user
 
@@ -141,8 +143,6 @@ async def update_user_details(phone: str = None, address_one: str = None, addres
                            user: schemas.Users = Depends(get_current_user)):
     
     user_details =  db.query(models.UserDetails).filter(models.User.id == user.id).first()
-    print(user_details.phone)
-    print(user)
 
     if not user_details:
         raise HTTPException(

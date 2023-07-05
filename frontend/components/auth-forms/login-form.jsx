@@ -1,28 +1,37 @@
-import {React, useState} from "react";
+import {React, useState, useContext} from "react";
 import Link from "next/link";
 import { warn, notify } from "@/app/layout";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { GoogleLogin } from "@react-oauth/google";
+import { AuthContext } from "../auth/AuthContext";
 
 export default function LoginForm() {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [response, setResponse] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const { login, user, accessToken, isLoggedIn } = useContext(AuthContext);
 
-    const handleEmailChange = (e) => {
-        setResponse('');
-        setError('');
-        setEmail(e.target.value);
-    }
+    const router = useRouter();
 
-    const handlePasswordChange = (e) => {
-        setResponse('');
+    const [loginForm, setLoginForm] = useState({
+        username: "",
+        password: "",
+    });
+
+    const handleChange = (event) => {
         setError('');
-        setPassword(e.target.value);
-    }
+        setResponse('');
+        const { name, value } = event.target;
+        setLoginForm((prevState) => {
+            return {
+            ...prevState,
+            [name]: value,
+            };
+        });
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -30,43 +39,70 @@ export default function LoginForm() {
         setResponse('')
         setError('')
         
-        const formData = {
-            username: email,
-            password: password
-        }
-
         try {
-            const res = await axios.post('http://localhost:8000/auth/login', formData, {
+            const res = await axios.post('http://localhost:8000/auth/login', loginForm, {
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             });
             if (res.data.user) {
                 setResponse("Login successful! You're being redirected.")
-                const userId = res.data.user.id;
-                const accessToken = res.data.access_token;
-                console.log(userId, accessToken);
+                login(res.data.access_token, res.data.user, res.data.user.id)
+                router.push("/dashboard");
             }
             else {
                 setResponse(res.data.message);
             }
             setLoading(false);
-            console.log(res.data.message)
         } catch (err) {
             setError(err.response.data.detail);
-            console.log(err.response.data.detail);
             setLoading(false);
         }
     };
 
+    // handle google sign in
+    const handleGoogleSignIn = async (tokenResponse) => {
+        setLoading(true)
+        setResponse(null)
+        setError('')
+
+        try {
+            const res = await axios.post(`http://localhost:8000/auth/google-login?token=${tokenResponse.credential}`, {
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            if (res.data.user) {
+                setResponse("Login successful! You're being redirected.");
+                console.log(res.data);
+                login(res.data.access_token, res.data.user, res.data.user.id);
+                router.push("/dashboard");
+            }
+            else {
+                setResponse(res.data.message);
+            }
+            setLoading(false);
+        } catch (err) {
+            console.log(err.response.data.detail);
+            setError(err.response.data.detail);
+            setLoading(false);
+        }
+    }
+
+    const handleGoogleSignInError = (err) => {
+        setLoading(false);
+        console.log(err);
+        setError("Something went wrong! Please try again.")
+    };
+    
     if (error) {
 		warn(`${error}`);
 	}
 
-	// display success message component
 	if (response) {
 		notify(`${response}`)
 	}
+
 
     return(
         <>
@@ -78,14 +114,16 @@ export default function LoginForm() {
                 <form onSubmit={handleSubmit} className="flex flex-col text-[16px]">
 
                     <label htmlFor="email">Email Address</label>
-                    <input type="text" value={email} onChange={handleEmailChange} className=" border border-gray-300 rounded-md mb-2 p-2" required/>
+                    <input type="text" value={loginForm.username} onChange={handleChange} name="username" className=" border border-gray-300 rounded-md mb-2 p-2" required/>
 
                     <label htmlFor="password">Password</label>
-                    <input type="password" value={password} onChange={handlePasswordChange} className=" border border-gray-300 rounded-md mb-2 p-2" required/>
+                    <input type="password" value={loginForm.password} onChange={handleChange} name="password" className=" border border-gray-300 rounded-md mb-2 p-2" required/>
 
                     <button className="bg-[#145DA0] p-3 text-white rounded-md my-3">{loading ? 'Loading...' : 'Login'}</button>
                 </form>
                 <p className="text-[16px] py-2">Don't have an account? <Link href="/auth/signup" className="text-blue-700 hover:underline">Signup</Link></p>
+                <p className="text-center my-5">OR</p>
+                <GoogleLogin onSuccess={handleGoogleSignIn} onError={handleGoogleSignInError}/>
             </div>
             <ToastContainer />
         </>

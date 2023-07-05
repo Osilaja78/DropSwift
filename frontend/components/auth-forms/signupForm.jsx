@@ -5,47 +5,32 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function SignupForm() {
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
     const [response, setResponse] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [googleUserToken, setGoogleUserToken] = useState(null)
 
-    const handleFirstNameChange = (e) => {
-        setError('');
-        setResponse('');
-        setFirstName(e.target.value);
-    }
+    const [signupForm, setSignupForm] = useState({
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        confirm_password: "",
+    });
 
-    const handleLastNameChange = (e) => {
-        setError('');
-        setResponse('');
-        setLastName(e.target.value);
-    }
-
-    const handleEamilChange = (e) => {
-        setError('');
-        setResponse('');
-        setEmail(e.target.value);
-    }
-
-    const handlePasswordChange = (e) => {
-        setError('');
-        setResponse('');
-        setPassword(e.target.value);
-    }
-
-    const handleConfrimPasswordChange = (e) => {
-        setError('');
-        setResponse('');
-        setConfirmPassword(e.target.value);
-    }
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setSignupForm((prevState) => {
+            return {
+            ...prevState,
+            [name]: value,
+            };
+        });
+    };
 
     const toastParams = {
         position: "top-right",
@@ -77,7 +62,7 @@ export default function SignupForm() {
         }
 
         try {
-            const res = await axios.post('http://localhost:8000/user', formData);
+            const res = await axios.post('http://localhost:8000/user', signupForm);
             setResponse(res.data.message);
             setLoading(false);
             console.log(res.data.message)
@@ -96,6 +81,40 @@ export default function SignupForm() {
 		notify(`${response}`)
 	}
 
+    // handle google signup
+    const handleGoogleSignIn = async (tokenResponse) => {
+        setLoading(true)
+        setResponse(null)
+        setError('')
+        setGoogleUserToken(tokenResponse);
+
+        try {
+            const res = await axios.post(`http://localhost:8000/auth/google-login?token=${tokenResponse.credential}`, {
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            if (res.data.user) {
+                setResponse("Signup successful! You're being redirected.")
+                const userId = res.data.user.id;
+                const accessToken = res.data.access_token;
+                console.log(userId, accessToken);
+            }
+            else {
+                setResponse(res.data.message);
+            }
+            setLoading(false);
+            console.log(res)
+        } catch (err) {
+            setError(err.response.data.detail);
+            setLoading(false);
+        }
+    }
+
+    const handleGoogleSignInError = (err) => {
+        setLoading(false);
+        console.log(err);
+      };  
 
     return(
         <>
@@ -106,19 +125,19 @@ export default function SignupForm() {
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col text-[16px]">
                     <label htmlFor="fname">First Name</label>
-                    <input type="text" value={firstName} onChange={handleFirstNameChange} className="border border-gray-300 rounded-md mb-2 p-2" required/>
+                    <input type="text" value={signupForm.firstName} onChange={handleChange} name="first_name" className="border border-gray-300 rounded-md mb-2 p-2" required/>
 
                     <label htmlFor="lname">Last Name</label>
-                    <input type="text" value={lastName} onChange={handleLastNameChange} className="border border-gray-300 rounded-md mb-2 p-2" required/>
+                    <input type="text" value={signupForm.lastName} onChange={handleChange} name="last_name" className="border border-gray-300 rounded-md mb-2 p-2" required/>
 
                     <label htmlFor="email">Email Address</label>
-                    <input type="text" value={email} onChange={handleEamilChange} className="border border-gray-300 rounded-md mb-2 p-2" required/>
+                    <input type="text" value={signupForm.email} onChange={handleChange} name="email" className="border border-gray-300 rounded-md mb-2 p-2" required/>
 
                     <label htmlFor="password">Password</label>
-                    <input type="password" value={password} onChange={handlePasswordChange} className="border border-gray-300 rounded-md mb-2 p-2" required/>
+                    <input type="password" value={signupForm.password} onChange={handleChange} name="password" className="border border-gray-300 rounded-md mb-2 p-2" required/>
 
                     <label htmlFor="password">Confirm Password</label>
-                    <input type="password" value={confirmPassword} onChange={handleConfrimPasswordChange} className="border border-gray-300 rounded-md mb-2 p-2" required/>
+                    <input type="password" value={signupForm.confirmPassword} onChange={handleChange} name="confirm_password" className="border border-gray-300 rounded-md mb-2 p-2" required/>
 
                     <div className="flex items-center gap-4 pl-2 py-2">
                         <input type="checkbox" id="policy" name="policy" value="Policy" />
@@ -126,9 +145,12 @@ export default function SignupForm() {
                     </div>
                     <button className="bg-[#145DA0] p-3 text-white rounded-md">{loading ? 'Loading...' : 'Signup'}</button>
                 </form>
-                <p className="text-[16px] py-2">Already have an account? <Link href="/auth/login" className="text-blue-700 hover:underline">Login</Link></p>
+                <p className="text-[16px] py-2">Already have an account? <Link href="/auth/signin" className="text-blue-700 hover:underline">Login</Link></p>
+                <p className="text-center my-5">OR</p>
+                <GoogleLogin onSuccess={handleGoogleSignIn} onError={handleGoogleSignInError}/>
             </div>
             <ToastContainer />
+
         </>
     )
 }

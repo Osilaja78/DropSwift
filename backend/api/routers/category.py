@@ -15,10 +15,7 @@ unauthorized = HTTPException(
 
 # Get all categories from the database
 @router.get('/category')
-async def all_categories(db: Session = Depends(get_db), user: schemas.Users = Depends(get_current_admin)):
-
-    if user.is_admin == False:
-        raise unauthorized
+async def all_categories(db: Session = Depends(get_db)):
 
     try:
         categories = db.query(models.ProductCategory).all()

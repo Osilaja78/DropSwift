@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from api.utils.email import send_mail
 from api.database import get_db
 from datetime import timedelta
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
 from api import models
 from dotenv import load_dotenv
 from datetime import datetime
@@ -15,6 +15,7 @@ from uuid import uuid4
 from google.auth.transport import requests
 from google.oauth2 import id_token
 import os
+from sqlalchemy.orm import joinedload
 
 
 router = APIRouter(tags=['Auth'])
@@ -154,8 +155,8 @@ async def google_login(token: str, db: Session = Depends(get_db)):
 
         return {"user": current_user, "access_token": access_token}
 
-    except ValueError:
-        raise HTTPException(status_code=401, detail='Invalid token')
+    except ValueError as e:
+        raise HTTPException(status_code=401, detail='Invalid token {}'.format(e))
     except HTTPException as e:
         raise e
     except Exception as f:
@@ -347,11 +348,17 @@ def get_current_user(token: str = Depends(oauth2_scheme),
         )
         # Get user email from the payload
         user_email: str = payload.get("sub")
+    except ExpiredSignatureError: # <---- this one
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="token has been expired")
     except JWTError:
         raise credentials_exception
 
     # Validate if the user actually exists in the database
-    user = db.query(models.User).filter(models.User.email == user_email).first()
+    user = db.query(models.User).filter(models.User.email == user_email).options(
+        joinedload(models.User.details),
+        joinedload(models.User.cart).joinedload(models.Cart.product),
+        joinedload(models.User.orders).joinedload(models.Orders.product)
+    ).first()
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
