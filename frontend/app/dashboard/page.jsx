@@ -80,12 +80,12 @@ export default function Dashboard() {
         <ProtectedRoute>
             <Navbar />
             {loading && (loadingAnimation)}
-            <div className=" grid grid-cols-4 mt-20 w-[90%] m-auto">
-                <div className=" col-span-1">
+            <div className="md:grid md:grid-cols-4 mt-10 md:mt-20 w-[90%] m-auto">
+                <div className="hidden md:block md:col-span-1">
                     <div className="py-3 px-6 max-w-[250px]">
                         <hr />
                         <ul className="text-[16px] space-y-1">
-                        <li onClick={() => handleLinkClick("address")} className={activeLink === "address" ? "bg-[#0C2D48] p-5 text-white cursor-pointer" : "bg-gray-100 p-5 cursor-pointer"}>My Account</li>
+                            <li onClick={() => handleLinkClick("address")} className={activeLink === "address" ? "bg-[#0C2D48] p-5 text-white cursor-pointer" : "bg-gray-100 p-5 cursor-pointer"}>My Account</li>
                             <li onClick={() => handleLinkClick("orders")} className={activeLink === "orders" ? "bg-[#0C2D48] p-5 text-white cursor-pointer" : "bg-gray-100 p-5 cursor-pointer"}>Orders</li>
                             <li onClick={() => handleLinkClick("cart")} className={activeLink === "cart" ? "bg-[#0C2D48] p-5 text-white cursor-pointer" : "bg-gray-100 p-5 cursor-pointer"}>Cart</li>
                             <li onClick={handleLogout} className="bg-gray-100 p-5 cursor-pointer">Logout</li>
@@ -93,7 +93,14 @@ export default function Dashboard() {
                         <hr />
                     </div>
                 </div>
-                <div className=" col-span-3">
+                <div className="md:hidden">
+                    <ul className="flex">
+                        <li onClick={() => handleLinkClick("address")} className={activeLink === "address" ? "p-5 cursor-pointer bg-[#0C2D48] text-white" : "bg-gray-100 p-5 cursor-pointer"}>My Account</li>
+                        <li onClick={() => handleLinkClick("orders")} className={activeLink === "orders" ? "py-5 px-8 cursor-pointer bg-[#0C2D48] text-white" : "bg-gray-100 py-5 px-8 cursor-pointer"}>Orders</li>
+                        <li onClick={() => handleLinkClick("cart")} className={activeLink === "cart" ? "py-5 px-10 cursor-pointer bg-[#0C2D48] text-white" : "bg-gray-100 py-5 px-10 cursor-pointer"}>Cart</li>
+                    </ul>
+                </div>
+                <div className="md:col-span-3 mt-5 md:mt-0">
                     {user ? <p className="text-[25px]">Welcome {user.firstName} ✌🏼</p> : ''}
                     <hr className="my-5"/>
                     <div className={activeLink == "orders" ? "block" : "hidden"}>

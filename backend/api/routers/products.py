@@ -20,7 +20,7 @@ async def all_products(name: str = None, price: str = None, category: str = None
 
     filters = []
     if name:
-        filters.append(models.Products.product_name == name)
+        filters.append(models.Products.product_name.like(f"%{name}%"))
     if category:
         filters.append(models.Products.category == category)
     if rating:

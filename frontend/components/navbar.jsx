@@ -5,16 +5,20 @@ import Logo from '../public/logo.svg';
 import Arrow from '../public/arrow-down.svg';
 import Accounts from '../public/accounts.svg';
 import Help from '../public/help.svg';
-import Search from '../public/search-icon.svg';
 import Link from 'next/link';
 import { AuthContext } from './auth/AuthContext';
 import { useRouter } from 'next/navigation';
 import CategoriesComponent from './categoriesComponent';
+import SearchBar from './searchBar';
+import menuIcon from '../public/hamburgerMenu2.svg';
+import closeMobileNavIcon from '../public/hamburgerClose.svg';
+import MobileNavigation from './mobileNav';
 
 export default function Navbar() {
 
     const [account, setAccount] = useState(false);
     const [catsComponent, setCatsComponent] = useState(false);
+    const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const { logout, isLoggedIn, categories } =  useContext(AuthContext);
     const router = useRouter();
 
@@ -28,6 +32,10 @@ export default function Navbar() {
 
     const handleLoginClick = () => {
         router.push("/auth/signin");
+    }
+
+    const handleMobileNavClick = () => {
+        setMobileNavOpen(!mobileNavOpen);
     }
 
     let AccountComponent = <div className='absolute bg-gray-50 border border-gray-300 rounded-lg text-black top-12 right-32 p-5 text-[17px] shadow-xl'>
@@ -48,22 +56,17 @@ export default function Navbar() {
     return (
         <>
             <div className='text-[#0C2D48]'>
-                <nav className='flex justify-between items-center mx-32 py-3'>
+                <nav className='flex justify-between items-center md:items-start my-3 md:py-0 md:mt-2 mx-5 md:mx-32'>
                     <Link href="/">
-                        <div className='flex gap-8 items-center'>
+                        <div className='flex gap-4 md:gap-8 items-center'>
                             <Image src={Logo} alt='logo'/>
                             <h1 className='text-3xl'>DropSwift</h1>
                         </div>
                     </Link>
-                    <div className='bg-white px-5 py-3 w-[500px] rounded-3xl text-black border border-gray-400'>
-                        <form action="" className='flex justify-between items-center'>
-                            <input type="search" name="search" id="search" placeholder='Search Products' className='border-none outline-none w-full' />
-                            <div className='bg-gray-300 rounded-full p-2'>
-                                <Image className='cursor-pointer' src={Search} alt='search'/>
-                            </div>
-                        </form>
+                    <div className='hidden xl:flex flex-col absolute left-[430px] z-10 w-[500px] md:mt-5'>
+                        <SearchBar />
                     </div>
-                    <ul className='flex relative gap-10 text-2xl'>
+                    <ul className='hidden md:flex relative gap-10 text-2xl mt-8'>
                         <div onClick={handleCategoriesClick} className='flex gap-3 items-center cursor-pointer'>
                             <li>Categories</li>
                             <Image className='mt-2 cursor-pointer' src={Arrow} alt='arrow' />
@@ -80,7 +83,10 @@ export default function Navbar() {
                             <li>Help</li>
                         </div>
                     </ul>
+                    <Image onClick={handleMobileNavClick} src={mobileNavOpen ? closeMobileNavIcon : menuIcon} className='md:hidden z-30 cursor-pointer'/>
+                    {mobileNavOpen && <MobileNavigation />}
                 </nav>
+                <hr />
                 <hr />
             </div>
         </>

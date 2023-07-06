@@ -5,7 +5,7 @@ import { AuthContext } from "../auth/AuthContext";
 import Image from "next/image";
 import emptyCart from "../../public/empty-cart.svg";
 
-export default function CartComponent({ product }) {
+export default function CartComponent() {
 
     const { cart } = useContext(AuthContext);
 

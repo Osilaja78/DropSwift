@@ -6,9 +6,9 @@ export default function FeaturedProducts() {
 
     return (
         <>
-            <section className="w-[90%] m-auto pb-20">
+            <section className="w-[90%] m-auto pb-20 font-poppins">
                 <p className="text-[30px] my-16">Featured Products</p>
-                <div className="flex gap-24">
+                <div className="flex flex-col md:flex-row max-w-max m-auto gap-24">
                     <ProductCard 
                         image={ProductSpinner}
                         name="Flying Fidget Spinner"

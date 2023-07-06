@@ -52,14 +52,6 @@ export default function SignupForm() {
         setLoading(true)
         setResponse(null)
         setError('')
-        
-        const formData = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            password: password,
-            confirm_password: confirmPassword
-        }
 
         try {
             const res = await axios.post('http://localhost:8000/user', signupForm);
@@ -76,7 +68,6 @@ export default function SignupForm() {
 		warn(`${error}`);
 	}
 
-	// display success message component
 	if (response) {
 		notify(`${response}`)
 	}
@@ -118,7 +109,7 @@ export default function SignupForm() {
 
     return(
         <>
-            <div className="w-[500px] mx-auto">
+            <div className="md:w-[500px] px-7 md:px-0 mx-auto pb-20 md:pb-0">
                 <div className="pb-16">
                     <p className=" font-bold text-[40px]">Get Started</p>
                     <p>Get ready for a whole new shopping experience.</p>

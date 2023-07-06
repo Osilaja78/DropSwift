@@ -5,8 +5,8 @@ import Image from "next/image";
 export default function Footer() {
     return (
         <>
-            <section className=" bg-gray-100">
-                <div className="grid grid-cols-5 w-[90%] m-auto py-20">
+            <section className="font-poppins bg-gray-100">
+                <div className="flex flex-col md:grid md:grid-cols-5 w-[90%] m-auto py-20">
                     <div className='flex flex-col gap-8 items-center col-span-2'>
                         <div className="flex items-center">
                             <Image src={Logo} alt="logo"/>
@@ -17,7 +17,7 @@ export default function Footer() {
                             <br /> across various categories.
                         </p>
                     </div>
-                    <div className="col-span-3 flex justify-between text-gray-600">
+                    <div className="col-span-3 flex flex-col md:flex-row mx-8 md:mx-0 justify-between text-gray-600 gap-5 md:gap-0 mt-5 md:mt-0">
                         <div>
                             <p className="text-[25px]">Shop</p>
                             <ul>

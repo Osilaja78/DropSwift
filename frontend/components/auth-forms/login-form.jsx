@@ -106,7 +106,7 @@ export default function LoginForm() {
 
     return(
         <>
-            <div className="w-[500px] mx-auto">
+            <div className="md:w-[500px] px-7 md:px-0 mx-auto pb-20 md:pb-0">
                 <div className="pb-20">
                     <p className=" font-bold text-[40px]">Welcome Back</p>
                     <p>Enter your details to access your account.</p>

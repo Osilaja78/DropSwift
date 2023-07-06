@@ -84,3 +84,14 @@ export async function removeFromCart(id, accessToken) {
         });
     });
 }
+
+export default function Slugify(str) {
+    const new_str = str
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+    return new_str;
+}

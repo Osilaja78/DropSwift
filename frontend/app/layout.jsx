@@ -1,3 +1,4 @@
+import "@fontsource/poppins"
 import Footer from "@/components/footer"
 import Navbar from "@/components/homeNavbar"
 import { toast } from "react-toastify";

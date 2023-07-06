@@ -60,13 +60,10 @@ export default function AddressBook() {
                     },
                 });
             }
-            console.log(res);
             setResponse(res.data.message);
             isLoading(false);
         } catch (err) {
-            console.log(err);
             setError(err.response.data.detail);
-            console.log(err.response.data.detail);
             isLoading(false);
         }
     };
@@ -75,21 +72,20 @@ export default function AddressBook() {
 		warn(`${error}`);
 	}
 
-	// display success message component
 	if (response) {
 		notify(`${response}`)
 	}
 
     return (
         <>
-            {user && <div className="grid grid-cols-2 gap-10">
-                <div className="col-span-1 border rounded-sm max-h-max">
+            {user && <div className="md:grid md:grid-cols-2 gap-10">
+                <div className="md:col-span-1 border rounded-sm max-h-max">
                     <h1 className="p-5 text-[16px]">My Details</h1>
                     <hr />
                     <p className="p-3">{user.firstName} {user.lastName ? user.lastName : ''}</p>
                     <p className="p-3">{user.email}</p>
                 </div>
-                <div className="col-span-1 border rounded-sm">
+                <div className="md:col-span-1 border rounded-sm mt-16 mb-20 md:mt-0">
                     <div className="flex justify-between">
                         <h1 className="p-5 text-[16px]">Address Book</h1>
                         <div className="mr-3 my-2 cursor-pointer hover:bg-[#0c2d482d] rounded-full p-2 flex items-center">

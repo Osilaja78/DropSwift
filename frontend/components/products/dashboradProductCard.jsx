@@ -52,8 +52,8 @@ const DashboardProductCard = ({ image, name, stars, price, status, id, qty, cart
     
 
     return (
-        <div className="cursor-pointer flex items-center justify-between">
-            <div className='flex gap-10 items-center'>
+        <div className="cursor-pointer flex flex-col md:flex-row items-center justify-between font-poppins">
+            <div className='flex flex-col md:flex-row gap-10 items-center'>
                 <div className='bg-gray-100 rounded-3xl max-w-[150px] h-[150px] relative px-6 py-10'>
                     <Image src={image} alt={name} className='w-[100%] h-[100%]'/>
                 </div>
@@ -63,7 +63,7 @@ const DashboardProductCard = ({ image, name, stars, price, status, id, qty, cart
             <div className="price pt-2 text-[15px] px-2">${price}</div>
             <div className="price pt-2 text-[15px] px-2">{status}</div>
             { qty && <div className="price pt-2 text-[15px] px-2">Qty: {qty}</div>}
-            { cart && <button onClick={handleRemoveFromCart} className="bg-[#0C2D48] p-5 text-white text-[20px] rounded-xl ml-10"><Image src={removeIcon} alt='remove'/></button>}
+            { cart && <button onClick={handleRemoveFromCart} className="bg-[#0C2D48] p-5 text-white text-[20px] rounded-xl md:ml-10"><Image src={removeIcon} alt='remove'/></button>}
             <ToastContainer />
         </div>
     );

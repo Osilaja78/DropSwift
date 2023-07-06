@@ -11,9 +11,9 @@ export default function Signup() {
         <>
             <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
                 <Navbar />
-                <div className="grid grid-cols-2 items-center">
+                <div className="md:grid md:grid-cols-2 items-center">
                     <Lottie animationData={animationData} className="py-32 col-span-1 bg-gray-100"/>
-                    <LoginForm className="col-span-1" />
+                    <LoginForm className="md:col-span-1" />
                 </div>
             </GoogleOAuthProvider>
         </>

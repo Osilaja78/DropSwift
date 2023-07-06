@@ -26,7 +26,7 @@ export default function CategoriesComponent() {
         <div>
             { categories[0] ? <ul className="text-[16px] space-y-2 py-2">
                 {categories.map((cat) => (
-                    <Link key={cat.category_id} href={`/products/${cat.name}`}><li>{cat.name}</li></Link>
+                    <Link key={cat.category_id} href={{pathname: "/products/", query: {category: cat.name}}}><li className=" hover:bg-white p-2">{cat.name}</li></Link>
                 ))}
             </ul> : <p className="text-center mt-10">Loading...</p>}
         </div>
