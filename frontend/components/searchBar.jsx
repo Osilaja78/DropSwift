@@ -43,7 +43,7 @@ export default function SearchBar() {
                     <hr className="mt-3"/>
                     <ul className="m-5 relative">
                         { suggestions.map((suggestion) => (
-                            <Link href={{pathname: "/products/", query: {search: searchQuery}}}><li key={suggestion.product_id} className="py-2 px-1 hover:bg-gray-100">{ suggestion.product_name }</li></Link>
+                            <Link key={suggestion.product_id} href={{pathname: "/products/", query: {search: searchQuery}}}><li className="py-2 px-1 hover:bg-gray-100">{ suggestion.product_name }</li></Link>
                         ))}
                     </ul>
                 </div>}

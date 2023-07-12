@@ -16,25 +16,24 @@ export default function VerifyToken() {
     const router = useRouter();
     const token = searchParams.get('token')
     
-    const verifyToken = async (e) => {
-        setLoading(true)
-
-        try {
-            const res = await axios.get(`http://localhost:8000/auth/verify-token?token=${token}`);
-            setResponse(res.data.message);
-            setLoading(false);
-            setTimeout(() => {
-                router.push("/auth/login")
-            }, 2000);
-        } catch (err) {
-            setError(err.response.data.detail);
-            setLoading(false);
-        }
-    }
-    // verifyToken();
     useEffect(() => {
+        const verifyToken = async (e) => {
+            setLoading(true)
+
+            try {
+                const res = await axios.get(`http://localhost:8000/auth/verify-token?token=${token}`);
+                setResponse(res.data.message);
+                setLoading(false);
+                setTimeout(() => {
+                    router.push("/auth/login")
+                }, 2000);
+            } catch (err) {
+                setError(err.response.data.detail);
+                setLoading(false);
+            }
+        }
         verifyToken();
-        }, []);
+    }, []);
 
     if (error) {
 		warn(`${error}`);

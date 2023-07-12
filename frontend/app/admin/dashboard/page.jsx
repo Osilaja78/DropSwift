@@ -36,10 +36,6 @@ export default function AdminDashboard() {
                             </div>
     }
 
-    useEffect(() => {
-        console.log(user);
-    }, [])
-
     return (
         <ProtectedRoute>
             <Navbar />

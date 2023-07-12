@@ -82,7 +82,7 @@ export default function HomeNavbar() {
                         <li>Help</li>
                     </div>
                 </ul>
-                <Image onClick={handleMobileNavClick} src={mobileNavOpen ? closeMobileNavIcon : menuIcon} className='md:hidden z-30'/>
+                <Image onClick={handleMobileNavClick} src={mobileNavOpen ? closeMobileNavIcon : menuIcon} className='md:hidden z-30' alt='menu-icon'/>
                 {mobileNavOpen && <MobileNavigation />}
             </nav>
         </>

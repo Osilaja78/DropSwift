@@ -8,7 +8,7 @@ export default function SpecialOffer() {
         <>
             <section className="w-[90%] m-auto pb-10 font-poppins">
                 <div className='max-w-max m-auto text-[30px] md:text-[40px] py-16 tracking-wider'>
-                    <p>Today's Special Offer</p>
+                    <p>Today&apos;s Special Offer</p>
                     <div className='w-[100px] m-auto h-[2px] bg-[#256f9a]'></div>
                 </div>
                 <div className="flex items-center max-w-[600px] m-auto h-[180px] md:h-[300px]">

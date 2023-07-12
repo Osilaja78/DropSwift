@@ -89,8 +89,8 @@ export default function Products() {
                 </div>
                 <div className="md:col-span-3 mt-10 md:mt-0">
                     <div className="flex flex-col md:flex-row gap-5 md:gap-0 justify-between">
-                        {categoryName && <p className="text-[16px] md:text-[20px]">Products in the category "{categoryName}".</p>}
-                        {searchTerm && <p className="text-[16px] md:text-[20px]">Search results for "{searchTerm}"</p>}
+                        {categoryName && <p className="text-[16px] md:text-[20px]">Products in the category &quot;{categoryName}&quot;.</p>}
+                        {searchTerm && <p className="text-[16px] md:text-[20px]">Search results for &quot;{searchTerm}&quot;</p>}
                         <div className="text-[12px] md:text-[16px]">
                             <label htmlFor="sort" className="text-[15px] md:text-[19px] px-5 md:p-5">Sort By:</label>
 

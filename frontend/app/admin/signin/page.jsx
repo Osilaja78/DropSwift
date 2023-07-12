@@ -73,9 +73,6 @@ export default function AdminLoginPage() {
 
     return (
         <>
-        <Head>
-            <title>Admin signin.</title>
-        </Head>
             <Navbar />
             <div className="md:w-[500px] px-7 md:px-0 mx-auto pb-20 md:pb-0 my-16 font-poppins">
                 <div className="pb-20">
@@ -92,7 +89,7 @@ export default function AdminLoginPage() {
 
                     <button className="bg-[#145DA0] p-3 text-white rounded-md my-3 disabled:bg-[#2696ff]" disabled={loading} >{loading ? 'Loading...' : 'Login'}</button>
                 </form>
-                <p className="text-[16px] py-2">Don't have an account? <Link href="/auth/signup" className="text-blue-700 hover:underline">Signup</Link></p>
+                <p className="text-[16px] py-2">Don&apos;t have an account? <Link href="/auth/signup" className="text-blue-700 hover:underline">Signup</Link></p>
             </div>
             <ToastContainer />
         </>

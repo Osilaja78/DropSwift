@@ -19,7 +19,7 @@ const ProductCard = ({ image, name, stars, price, id }) => {
     const router = useRouter();
 
     const starElements = Array.from({ length: stars }, (_, index) => (
-          <Image key={index} src={Stars}/>
+          <Image key={index} src={Stars} alt='stars'/>
     ));
 
     const handleAddToCart = async () => {

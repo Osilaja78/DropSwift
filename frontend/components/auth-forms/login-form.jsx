@@ -121,7 +121,7 @@ export default function LoginForm() {
 
                     <button className="bg-[#145DA0] p-3 text-white rounded-md my-3">{loading ? 'Loading...' : 'Login'}</button>
                 </form>
-                <p className="text-[16px] py-2">Don't have an account? <Link href="/auth/signup" className="text-blue-700 hover:underline">Signup</Link></p>
+                <p className="text-[16px] py-2">Don&apos;t have an account? <Link href="/auth/signup" className="text-blue-700 hover:underline">Signup</Link></p>
                 <p className="text-center my-5">OR</p>
                 <GoogleLogin onSuccess={handleGoogleSignIn} onError={handleGoogleSignInError}/>
             </div>

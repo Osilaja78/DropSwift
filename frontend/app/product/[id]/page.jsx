@@ -61,7 +61,7 @@ export default function ProductDetails() {
     let starElements;
     if (productDetail) {
         starElements = Array.from({ length: productDetail.rating }, (_, index) => (
-            <Image key={index} src={Stars}/>
+            <Image key={index} src={Stars} alt='stars'/>
         ));
     }
 
