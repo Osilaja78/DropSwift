@@ -62,7 +62,7 @@ export default function HomeNavbar() {
                         <h1 className='text-3xl'>DropSwift</h1>
                     </div>
                 </Link>
-                <div className='hidden xl:flex flex-col absolute left-[430px] z-10 w-[500px]'>
+                <div className='hidden xl:flex flex-col relative z-10 w-[500px]'>
                     <SearchBar />
                 </div>
                 <ul className='hidden md:flex relative gap-10 text-2xl mt-3'>

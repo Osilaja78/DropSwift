@@ -20,10 +20,6 @@ export const notify = (val) => toast.success(`${val}`, toastParams);
 export const warn = (val) => toast.error(`${val}`, toastParams);
 export const inform = (val) => toast.info(`${val}`, toastParams);
 
-export const metadata = {
-  title: 'DropSwift',
-  description: 'DropSwift E-commerce store.',
-}
  
 export default function RootLayout({ children }) {
  return (

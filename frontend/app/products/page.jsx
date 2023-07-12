@@ -103,7 +103,7 @@ export default function Products() {
                     </div>
                     { products[0] ? <div>
                         { loading ? loadingAnimation : 
-                            <ul className="flex flex-wrap gap-4 mt-10 justify-between md:justify-normal">
+                            <ul className="flex flex-wrap gap-4 mt-10 justify-around md:justify-normal">
                                 {products.map((product) => (
                                 <li key={product.product_id}>
                                     <ProductCard
