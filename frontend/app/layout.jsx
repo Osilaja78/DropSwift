@@ -1,6 +1,5 @@
-import "@fontsource/poppins"
-import Footer from "@/components/footer"
-import Navbar from "@/components/homeNavbar"
+import "@fontsource/poppins";
+import Footer from "@/components/footer";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from "@/components/auth/AuthContext";
