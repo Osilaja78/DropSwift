@@ -50,6 +50,7 @@ class Orders(Base):
     product_id = Column(String(80), ForeignKey('Products.product_id'))
     no_of_orders = Column(Integer)
     order_status = Column(String(50))
+    # date_added = Column(DateTime(timezone=True))
 
     user = relationship("User", back_populates="orders")
     product = relationship("Products", back_populates="orders")

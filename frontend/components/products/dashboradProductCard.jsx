@@ -7,6 +7,7 @@ import { AuthContext } from '../auth/AuthContext';
 import { warn, notify } from '@/app/layout';
 import { ToastContainer } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const DashboardProductCard = ({ image, name, stars, price, status, id, qty, cart }) => {
 
@@ -63,6 +64,7 @@ const DashboardProductCard = ({ image, name, stars, price, status, id, qty, cart
             <div className="price pt-2 text-[15px] px-2">${price}</div>
             <div className="price pt-2 text-[15px] px-2">{status}</div>
             { qty && <div className="price pt-2 text-[15px] px-2">Qty: {qty}</div>}
+            { cart && <Link href={{pathname: "/r/checkout", query: {productId: `${id}`}}}><button  className="bg-[#0C2D48] p-5 text-white text-[14px] rounded-xl md:ml-10">Buy Now</button></Link>}
             { cart && <button onClick={handleRemoveFromCart} className="bg-[#0C2D48] p-5 text-white text-[20px] rounded-xl md:ml-10"><Image src={removeIcon} alt='remove'/></button>}
             <ToastContainer />
         </div>

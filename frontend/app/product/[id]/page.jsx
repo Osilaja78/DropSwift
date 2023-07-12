@@ -27,7 +27,6 @@ export default function ProductDetails() {
     const [productDetail, setProductDetail] = useState(null);
 
     useEffect(() => {
-        console.log("Inside use effect...")
         if (productId) {
             const fetchProduct = async () => {
                 try {

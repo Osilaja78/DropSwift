@@ -50,8 +50,8 @@ const ProductCard = ({ image, name, stars, price, id }) => {
     return (
         <div className="cursor-pointer">
             <Link href={{pathname: `/product/${id}`}}>
-                <div className='bg-gray-100 rounded-3xl max-w-[150px] h-[150px] md:max-w-[200px] md:h-[200px] relative px-6 py-10'>
-                    <Image src={image} alt={name ? name : "Product Image" } className='w-[100%] h-[100%]'/>
+                <div className='bg-gray-100 rounded-3xl max-w-[150px] h-[150px] md:max-w-[200px] md:h-[200px] relative p-6'>
+                    <Image src={image} alt={name ? name : "Product Image" } width={200} height={200} className=''/>
                 </div>
             </Link>
             <Link href={{pathname: `/product/${id}`}}>

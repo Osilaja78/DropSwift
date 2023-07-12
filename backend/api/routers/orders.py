@@ -24,7 +24,9 @@ async def admin_get_all_orders(status: str = None, db: Session = Depends(get_db)
     if status:
         filters.append(models.Orders.order_status == status)
 
-    orders = db.query(models.Orders).filter(*filters).all()
+    orders = db.query(models.Orders).filter(*filters).options(
+        joinedload(models.Orders.user)
+    ).all()
     return orders
 
 # Add product to orders

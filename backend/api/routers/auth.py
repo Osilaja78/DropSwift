@@ -164,7 +164,7 @@ async def google_login(token: str, db: Session = Depends(get_db)):
         
 
 # Admin login
-@router.post('/admin/admin-login')
+@router.post('/auth/admin-login')
 async def login(request: OAuth2PasswordRequestForm = Depends(), 
                 db: Session = Depends(get_db)):
     

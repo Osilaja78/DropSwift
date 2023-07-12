@@ -2,10 +2,12 @@
 import React, { useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthContext";
+import { usePathname } from "next/navigation";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, accessToken} = useContext(AuthContext);  
   const router = useRouter();
+  const pathname = usePathname();
 
   let localToken, localUserId;
   if (typeof window !== 'undefined') {
@@ -16,7 +18,11 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     if (!localToken || !accessToken) {
       // User is not logged in, redirect to login page
-      router.push("/auth/signin");
+      if (pathname === "/admin/dashboard") {
+        router.push("/admin/signin");
+      } else {
+        router.push("/auth/signin");
+      }
     }
   }, [isLoggedIn, accessToken, router]);
 

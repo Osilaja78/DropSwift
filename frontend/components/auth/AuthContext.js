@@ -1,6 +1,5 @@
 "use client"
 import { useState, createContext } from "react";
-import { getCategories } from "@/apis";
 
 const AuthContext = createContext();
 
@@ -26,6 +25,16 @@ const AuthProvider = ({ children }) => {
     setAccessToken(token);
     setUserId(id);
     setUser(userDetails);
+    window.sessionStorage.setItem("accessToken", token);
+    window.sessionStorage.setItem("userId", id);
+    window.sessionStorage.setItem("isLoggedIn", true);
+  };
+
+  const adminLogin = (token, adminDetails, id) => {
+    setIsLoggedIn(true);
+    setAccessToken(token);
+    setUserId(id);
+    setUser(adminDetails);
     window.sessionStorage.setItem("accessToken", token);
     window.sessionStorage.setItem("userId", id);
     window.sessionStorage.setItem("isLoggedIn", true);
@@ -60,6 +69,7 @@ const AuthProvider = ({ children }) => {
     setOrders,
     setCategories,
     login,
+    adminLogin,
     logout,
   };
 

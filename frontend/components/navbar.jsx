@@ -83,7 +83,7 @@ export default function Navbar() {
                             <li>Help</li>
                         </div>
                     </ul>
-                    <Image onClick={handleMobileNavClick} src={mobileNavOpen ? closeMobileNavIcon : menuIcon} className='md:hidden z-30 cursor-pointer'/>
+                    <Image onClick={handleMobileNavClick} src={mobileNavOpen ? closeMobileNavIcon : menuIcon} className='md:hidden z-30 cursor-pointer' alt='menu-icon' />
                     {mobileNavOpen && <MobileNavigation />}
                 </nav>
                 <hr />

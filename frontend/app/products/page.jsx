@@ -107,7 +107,7 @@ export default function Products() {
                                 {products.map((product) => (
                                 <li key={product.product_id}>
                                     <ProductCard
-                                        image={ProductSpinner}
+                                        image={product.main_image_url !== "string" && product.main_image_url !== "" ? product.main_image_url : ProductSpinner}
                                         name={product.product_name}
                                         stars={product.rating}
                                         price={product.price}

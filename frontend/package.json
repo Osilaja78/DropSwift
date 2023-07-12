@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.367.0",
+    "@aws-sdk/s3-request-presigner": "^3.367.0",
+    "@aws-sdk/signature-v4-crt": "^3.363.0",
+    "@aws-sdk/url-parser": "^3.357.0",
     "@fontsource/poppins": "^5.0.4",
     "@react-oauth/google": "^0.11.0",
     "autoprefixer": "10.4.14",
