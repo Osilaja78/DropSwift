@@ -30,7 +30,7 @@ async def admin_get_all_orders(status: str = None, db: Session = Depends(get_db)
     return orders
 
 # Add product to orders
-@router.post('/order')
+@router.post('/add-order')
 async def add_an_order(request: schemas.Order, db: Session = Depends(get_db),
     user: schemas.Users = Depends(get_current_user)):
 
@@ -71,7 +71,7 @@ async def add_an_order(request: schemas.Order, db: Session = Depends(get_db),
     except Exception as e:
         return f"Exception: {e}"
     
-    return {"messge": "Your order has been successfully submitted. Please check your email for order details!"}
+    return {"message": "Your order has been successfully submitted. Please check your email for order details!"}
 
 # Get all orders belonging to a user
 @router.get('/user-orders')
