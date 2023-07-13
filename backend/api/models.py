@@ -50,7 +50,7 @@ class Orders(Base):
     product_id = Column(String(80), ForeignKey('Products.product_id'))
     no_of_orders = Column(Integer)
     order_status = Column(String(50))
-    # date_added = Column(DateTime(timezone=True))
+    date_added = Column(DateTime(timezone=True))
 
     user = relationship("User", back_populates="orders")
     product = relationship("Products", back_populates="orders")
@@ -61,6 +61,7 @@ class Products(Base):
     product_id = Column(String(80), primary_key=True, index=True)
     product_name = Column(String(200))
     description = Column(String(2000))
+    tag = Column(String(200))
     price = Column(Integer)
     rating = Column(Integer)
     category = Column(String(80), ForeignKey('ProductCategory.name'))

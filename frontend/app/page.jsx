@@ -11,18 +11,34 @@ import HomeNavbar from '@/components/homeNavbar';
 import Link from 'next/link';
 import homepageAnimation from "../public/homeAnimation";
 import Lottie from 'lottie-react';
+import { gsap } from 'gsap';
 
 export default function Home() {
+
+    // Animation
+    if (typeof document !== 'undefined') {
+        let sectionText = document.getElementById('sectionText');
+
+        function animateText() {
+            const tl = gsap.timeline({defaults: {duration: 1}});
+      
+            // tl.fromTo(heroText, {y: 100, skewY: 10}, {y: 0, ease: "Power4.out", skewY: 0, stagger: {amount: 0.8}})
+            tl.fromTo(sectionText, {y: 100, skewY: 10}, {y: 0, ease: "Power4.out", skewY: 0, stagger: {amount: 0.3}})
+        }
+      
+        animateText()
+    }
+
     return (
         <>
             <HomeNavbar />
             <HeroSection />
             <section className='font-poppins flex flex-col md:flex-row items-center w-[90%] justify-around mx-auto my-10 gap-10 md:gap-0 text-center md:text-left'>
-                <div className='max-w-[550px] md:pl-10 px-5 md:px-0 pt-5 md:pt-0'>
+                <div id='sectionText' className='max-w-[550px] md:pl-10 px-5 md:px-0 pt-5 md:pt-0'>
                     <p className="text-[20px]">
-                    Explore our vast collection of products, shop with confidence, 
-                    and let us handle the rest. Say goodbye to traditional hassles 
-                    and say hello to effortless shopping.
+                        Explore our vast collection of products, shop with confidence, 
+                        and let us handle the rest. Say goodbye to traditional hassles 
+                        and say hello to effortless shopping.
                     </p>
                     <Link href="/products"><button className="p-5 bg-[#0C2D48] rounded-[45px] text-white text-2xl font-[510] mt-6">Explore</button></Link>
                 </div>
@@ -32,7 +48,7 @@ export default function Home() {
             </section>
             {/* ******************* WE OFFER SECTION ****************8 */}
             <section className='w-[90%] m-auto pb-20 font-poppins'>
-                <div className='max-w-max m-auto text-[30px] md:text-[40px] md:py-16 tracking-wider'>
+                <div className='max-w-max m-auto text-[30px] md:text-[40px] pb-8 md:pb-0 md:py-16 tracking-wider'>
                     <p>We Offer</p>
                     <div className='w-full h-[2px] bg-[#256f9a]'></div>
                 </div>

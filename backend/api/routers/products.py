@@ -15,7 +15,7 @@ unauthorized = HTTPException(
 
 # Get all products from the database
 @router.get('/products')
-async def all_products(name: str = None, price: str = None, category: str = None,
+async def all_products(name: str = None, price: str = None, category: str = None, tag: str = None,
                        rating: int = None, newest: bool = None, db: Session = Depends(get_db)):
 
     filters = []
@@ -23,6 +23,8 @@ async def all_products(name: str = None, price: str = None, category: str = None
         filters.append(models.Products.product_name.like(f"%{name}%"))
     if category:
         filters.append(models.Products.category == category)
+    if tag:
+        filters.append(models.Products.tag == tag)
     if rating:
         filters.append(models.Products.rating == rating)
 
