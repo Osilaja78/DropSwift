@@ -10,7 +10,7 @@ class User(Base):
     first_name = Column(String(50))
     last_name = Column(String(50))
     email = Column(String(50), unique=True)
-    password = Column(String(50))
+    password = Column(String(150))
     is_verified = Column(Boolean, default=False)
 
     orders = relationship("Orders", back_populates="user")
@@ -24,7 +24,7 @@ class Admin(Base):
     first_name = Column(String(50))
     last_name = Column(String(50))
     email = Column(String(50), unique=True)
-    password = Column(String(50))
+    password = Column(String(150))
     is_admin = Column(Boolean, default=False)
 
 class UserDetails(Base):
