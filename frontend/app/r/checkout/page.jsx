@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { warn, notify } from "@/app/layout";
 import { ToastContainer } from "react-toastify";
+import { baseApiUrl } from "@/apis";
 
 
 export default function CheckoutPage() {
@@ -44,7 +45,7 @@ export default function CheckoutPage() {
         if (productId) {
             const fetchProduct = async () => {
                 try {
-                    const res = await axios.get(`http://localhost:8000/product/${productId}`)
+                    const res = await axios.get(`${baseApiUrl}/product/${productId}`)
                     setProductDetail(res.data);
                 } catch (err) {
                     console.log(err);
@@ -59,7 +60,7 @@ export default function CheckoutPage() {
         if (!userDetails[0]) {
             const fetchUserDetails = async () => {
                 try {
-                    const res = await axios.get(`http://localhost:8000/user/`, {
+                    const res = await axios.get(`${baseApiUrl}/user/`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },
@@ -119,7 +120,7 @@ export default function CheckoutPage() {
                                     no_of_order: quantity
                                 };
                         
-                                const res = await axios.post("http://localhost:8000/add-order", orderData, {
+                                const res = await axios.post(`${baseApiUrl}/add-order`, orderData, {
                                     headers: {
                                         Authorization: `Bearer ${accessToken}`,
                                     },
@@ -187,6 +188,7 @@ export default function CheckoutPage() {
                 </div>)}
                 <button onClick={handleProceed} className="bg-[#0C2D48] px-5 py-4 text-white text-[16px] rounded-xl mt-10">Proceed</button>
             </div>
+            <ToastContainer />
         </ProtectedRoute>
     )
 }

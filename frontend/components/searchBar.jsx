@@ -3,6 +3,7 @@ import Search from "../public/search-icon.svg";
 import Image from "next/image";
 import axios from "axios";
 import Link from "next/link";
+import { baseApiUrl } from "@/apis";
 
 export default function SearchBar() {
 
@@ -20,7 +21,7 @@ export default function SearchBar() {
             if (value === "") {
                 setSuggestions([]);
             } else {
-                const res = await axios.get(`http://localhost:8000/products?name=${value}`);
+                const res = await axios.get(`${baseApiUrl}/products?name=${value}`);
                 const suggestionsData = res.data;
                 setSuggestions(suggestionsData);
             }

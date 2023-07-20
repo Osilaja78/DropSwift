@@ -2,10 +2,12 @@ import { AuthContext } from "@/components/auth/AuthContext";
 import axios from "axios";
 import { resolve } from "styled-jsx/css";
 
+export const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL
+
 // API call to get the list of all categories available
 export async function getCategories() {
     return new Promise((resolve, reject) => {
-        axios.get(`http://localhost:8000/category`)
+        axios.get(`${baseApiUrl}/category`)
             .then((res) => {
                 resolve(res.data);
             })
@@ -19,7 +21,7 @@ export async function getCategories() {
 // API call to get products with specified parameters like category, price, newest.
 export async function getProducts(params) {
     return new Promise((resolve, reject) => {
-        axios.get(`http://localhost:8000/products`, {
+        axios.get(`${baseApiUrl}/products`, {
             params: params
         }).then((res) => {
             resolve(res.data);
@@ -37,7 +39,7 @@ export async function addToCart(id, accessToken) {
     }
     
     return new Promise((resolve, reject) => {
-        axios.post(`http://localhost:8000/add-to-cart`, formData, {
+        axios.post(`${baseApiUrl}/add-to-cart`, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -65,7 +67,7 @@ export async function removeFromCart(id, accessToken) {
     }
     console.log(formData);
     return new Promise((resolve, reject) => {
-        axios.post(`http://localhost:8000/delete-from-cart`, formData, {
+        axios.post(`${baseApiUrl}/delete-from-cart`, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

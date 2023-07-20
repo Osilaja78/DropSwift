@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { warn, notify } from "@/app/layout";
 import "../../../styles/globals.css";
+import { baseApiUrl } from "@/apis";
 
 export default function VerifyToken() {
 
@@ -21,11 +22,11 @@ export default function VerifyToken() {
             setLoading(true)
 
             try {
-                const res = await axios.get(`http://localhost:8000/auth/verify-token?token=${token}`);
+                const res = await axios.get(`${baseApiUrl}/auth/verify-token?token=${token}`);
                 setResponse(res.data.message);
                 setLoading(false);
                 setTimeout(() => {
-                    router.push("/auth/login")
+                    router.push("/auth/signin")
                 }, 2000);
             } catch (err) {
                 setError(err.response.data.detail);

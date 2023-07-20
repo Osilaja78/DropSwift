@@ -13,6 +13,7 @@ import { AuthContext } from "@/components/auth/AuthContext";
 import { addToCart } from "@/apis";
 import { warn, notify } from "@/app/layout";
 import { ToastContainer } from "react-toastify";
+import { baseApiUrl } from "@/apis";
 
 export default function ProductDetails() {
 
@@ -30,7 +31,7 @@ export default function ProductDetails() {
         if (productId) {
             const fetchProduct = async () => {
                 try {
-                    const res = await axios.get(`http://localhost:8000/product/${productId}`)
+                    const res = await axios.get(`${baseApiUrl}/product/${productId}`)
                     setProductDetail(res.data);
                     console.log(res.data);
                 } catch (err) {

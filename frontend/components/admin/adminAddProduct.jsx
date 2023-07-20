@@ -5,6 +5,7 @@ import axios from "axios";
 import { AuthContext } from "../auth/AuthContext";
 import { warn, notify } from "@/app/layout";
 import { ToastContainer } from "react-toastify";
+import { baseApiUrl } from "@/apis";
 
 const s3Client = new S3Client({
     region: process.env.NEXT_PUBLIC_AWS_REGION,
@@ -108,7 +109,7 @@ export default function AdminAddProductComponent() {
         
             console.log('Upload form ->', uploadForm);
             try {
-                const res = await axios.post('http://localhost:8000/product', uploadForm, {
+                const res = await axios.post(`${baseApiUrl}}/product`, uploadForm, {
                     headers:{
                         Authorization: `Bearer ${accessToken}`,
                     }

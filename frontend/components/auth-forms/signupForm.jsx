@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { GoogleLogin } from "@react-oauth/google";
+import { baseApiUrl } from "@/apis";
 
 export default function SignupForm() {
 
@@ -54,7 +55,7 @@ export default function SignupForm() {
         setError('')
 
         try {
-            const res = await axios.post('http://localhost:8000/user', signupForm);
+            const res = await axios.post(`${baseApiUrl}/user`, signupForm);
             setResponse(res.data.message);
             setLoading(false);
             console.log(res.data.message)
@@ -80,7 +81,7 @@ export default function SignupForm() {
         setGoogleUserToken(tokenResponse);
 
         try {
-            const res = await axios.post(`http://localhost:8000/auth/google-login?token=${tokenResponse.credential}`, {
+            const res = await axios.post(`${baseApiUrl}/auth/google-login?token=${tokenResponse.credential}`, {
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
@@ -97,6 +98,7 @@ export default function SignupForm() {
             setLoading(false);
             console.log(res)
         } catch (err) {
+            console.log(err)
             setError(err.response.data.detail);
             setLoading(false);
         }

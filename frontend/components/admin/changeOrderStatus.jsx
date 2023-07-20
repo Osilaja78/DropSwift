@@ -3,6 +3,7 @@ import { warn, notify } from "@/app/layout";
 import { useState, useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { ToastContainer } from "react-toastify";
+import { baseApiUrl } from "@/apis";
 
 export default function ChangeOrderStatusComponent() {
 
@@ -36,7 +37,7 @@ export default function ChangeOrderStatusComponent() {
         setError('');
         console.log(changeOrderStatusForm);
         try {
-            const res = await axios.put('http://localhost:8000/change-order-status', {
+            const res = await axios.put(`${baseApiUrl}/change-order-status`, {
                 params: changeOrderStatusForm,
                 headers:{
                     ContentType: "application/json",

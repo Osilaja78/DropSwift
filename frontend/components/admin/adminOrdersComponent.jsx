@@ -4,6 +4,7 @@ import { AuthContext } from "../auth/AuthContext";
 import Lottie from "lottie-react";
 import cartLoader from "../../public/cart-loader";
 import { useRouter } from "next/navigation";
+import { baseApiUrl } from "@/apis";
 
 export default function AdminOrdesComponent() {
 
@@ -26,7 +27,7 @@ export default function AdminOrdesComponent() {
         const fetchOrders = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`http://localhost:8000/order`, {
+                const res = await axios.get(`${baseApiUrl}/order`, {
                     params: params,
                     headers: {
                         Authorization: `Bearer ${accessToken}`,

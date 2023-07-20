@@ -11,6 +11,7 @@ import OrdersComponent from "@/components/dashboard/orders";
 import CartComponent from "@/components/dashboard/cart";
 import AddressBook from "@/components/dashboard/addressBook";
 import { useRouter } from "next/navigation";
+import { baseApiUrl } from "@/apis";
 
 export default function Dashboard() {
 
@@ -44,7 +45,7 @@ export default function Dashboard() {
         setLoading(true);
         const fetchUserDetails = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/user/`, {
+                const res = await axios.get(`${baseApiUrl}/user/`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },

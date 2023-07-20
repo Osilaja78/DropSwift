@@ -4,6 +4,7 @@ import { AuthContext } from "../auth/AuthContext";
 import { warn, notify } from "@/app/layout";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
+import { baseApiUrl } from "@/apis";
 
 export default function AdminCategoriesComponent() {
 
@@ -51,7 +52,7 @@ export default function AdminCategoriesComponent() {
         setResponse('');
         setError('');
         try {
-            const res = await axios.post('http://localhost:8000/category', addCategoriesForm, {
+            const res = await axios.post(`${baseApiUrl}/category`, addCategoriesForm, {
                 headers:{
                     Authorization: `Bearer ${accessToken}`,
                 }
@@ -73,7 +74,7 @@ export default function AdminCategoriesComponent() {
         setResponse('');
         setError('');
         try {
-            const res = await axios.post(`http://localhost:8000/category/${categoryId}`, {
+            const res = await axios.post(`${baseApiUrl}/category/${categoryId}`, {
                 headers:{
                     Authorization: `Bearer ${accessToken}`,
                 }

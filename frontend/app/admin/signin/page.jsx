@@ -8,7 +8,7 @@ import { warn, notify } from "@/app/layout";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/components/auth/AuthContext";
-import Head from "next/head";
+import { baseApiUrl } from "@/apis";
 
 export default function AdminLoginPage() {
 
@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
         setError('')
         
         try {
-            const res = await axios.post('http://localhost:8000/auth/admin-login', loginForm, {
+            const res = await axios.post(`${baseApiUrl}/auth/admin-login`, loginForm, {
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }

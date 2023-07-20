@@ -13,6 +13,7 @@ import homepageAnimation from "../public/homeAnimation";
 import Lottie from 'lottie-react';
 import { gsap } from 'gsap';
 
+// gsap.registerPlugin(ScrollTrigger)
 export default function Home() {
 
     // Animation

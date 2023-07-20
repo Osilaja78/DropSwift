@@ -6,6 +6,7 @@ import axios from "axios";
 import { contains } from "jquery";
 import { warn, notify } from "@/app/layout";
 import { ToastContainer } from "react-toastify";
+import { baseApiUrl } from "@/apis";
 
 export default function AddressBook() {
 
@@ -48,13 +49,13 @@ export default function AddressBook() {
         try {
             let res;
             if (userDetails[0]) {
-                res = await axios.put('http://localhost:8000/user-details', editAddressForm, {
+                res = await axios.put(`${baseApiUrl}/user-details`, editAddressForm, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     },
                 });
             } else {
-                res = await axios.post('http://localhost:8000/user-details', editAddressForm, {
+                res = await axios.post(`${baseApiUrl}/user-details`, editAddressForm, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     },

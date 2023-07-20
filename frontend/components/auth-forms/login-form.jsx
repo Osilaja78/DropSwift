@@ -6,6 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { GoogleLogin } from "@react-oauth/google";
 import { AuthContext } from "../auth/AuthContext";
+import { baseApiUrl } from "@/apis";
 
 export default function LoginForm() {
 
@@ -40,7 +41,7 @@ export default function LoginForm() {
         setError('')
         
         try {
-            const res = await axios.post('http://localhost:8000/auth/login', loginForm, {
+            const res = await axios.post(`${baseApiUrl}/auth/login`, loginForm, {
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
@@ -54,7 +55,9 @@ export default function LoginForm() {
                 setResponse(res.data.message);
             }
             setLoading(false);
+            console.log(res);
         } catch (err) {
+            console.log(err);
             setError(err.response.data.detail);
             setLoading(false);
         }
@@ -67,7 +70,7 @@ export default function LoginForm() {
         setError('')
 
         try {
-            const res = await axios.post(`http://localhost:8000/auth/google-login?token=${tokenResponse.credential}`, {
+            const res = await axios.post(`${baseApiUrl}/auth/google-login?token=${tokenResponse.credential}`, {
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
