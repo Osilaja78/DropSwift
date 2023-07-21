@@ -12,17 +12,19 @@ import Link from 'next/link';
 import homepageAnimation from "../public/homeAnimation";
 import Lottie from 'lottie-react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
 
-// gsap.registerPlugin(ScrollTrigger)
+
 export default function Home() {
 
-    // Animation
+    // Gsap Animation
     if (typeof document !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger)
         let sectionText = document.getElementById('sectionText');
 
         function animateText() {
-            const tl = gsap.timeline({defaults: {duration: 1}});
-      
+            const tl = gsap.timeline({scrollTrigger: {trigger: sectionText, start: "top center"}, defaults: {duration: 1}});
+
             // tl.fromTo(heroText, {y: 100, skewY: 10}, {y: 0, ease: "Power4.out", skewY: 0, stagger: {amount: 0.8}})
             tl.fromTo(sectionText, {y: 100, skewY: 10}, {y: 0, ease: "Power4.out", skewY: 0, stagger: {amount: 0.3}})
         }
@@ -49,7 +51,7 @@ export default function Home() {
             </section>
             {/* ******************* WE OFFER SECTION ****************8 */}
             <section className='w-[90%] m-auto pb-20 font-poppins'>
-                <div className='max-w-max m-auto text-[30px] md:text-[40px] pb-8 md:pb-0 md:py-16 tracking-wider'>
+                <div className='max-w-max m-auto text-[30px] md:text-[40px] pb-8 md:pb-5 md:py-16 tracking-wider'>
                     <p>We Offer</p>
                     <div className='w-full h-[2px] bg-[#256f9a]'></div>
                 </div>
