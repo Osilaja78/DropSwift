@@ -109,7 +109,7 @@ export default function AdminAddProductComponent() {
         
             console.log('Upload form ->', uploadForm);
             try {
-                const res = await axios.post(`${baseApiUrl}}/product`, uploadForm, {
+                const res = await axios.post(`${baseApiUrl}/product`, uploadForm, {
                     headers:{
                         Authorization: `Bearer ${accessToken}`,
                     }
@@ -145,7 +145,7 @@ export default function AdminAddProductComponent() {
                 <input type="text" name="description" onChange={handleFormChange} className="border rounded-lg p-2" required/>
 
                 <label htmlFor="tag">Tag <i>not mandatory</i></label>
-                <input type="text" name="tag" onChange={handleFormChange} classNames="border rounded-lg p-2" required/>
+                <input type="text" name="tag" onChange={handleFormChange} classNames="border rounded-lg p-2" />
 
                 <label htmlFor="price">Price</label>
                 <input type="text" name="price" onChange={handleFormChange} className="border rounded-lg p-2" required />
