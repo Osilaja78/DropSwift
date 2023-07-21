@@ -144,6 +144,9 @@ export default function AdminAddProductComponent() {
                 <label htmlFor="description">Product Description</label>
                 <input type="text" name="description" onChange={handleFormChange} className="border rounded-lg p-2" required/>
 
+                <label htmlFor="tag">Tag <i>not mandatory</i></label>
+                <input type="text" name="tag" onChange={handleFormChange} classNames="border rounded-lg p-2" required/>
+
                 <label htmlFor="price">Price</label>
                 <input type="text" name="price" onChange={handleFormChange} className="border rounded-lg p-2" required />
 

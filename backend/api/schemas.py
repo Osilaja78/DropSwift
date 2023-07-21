@@ -31,6 +31,7 @@ class UserDetails(BaseModel):
 class Products(BaseModel):
     product_name: str
     description: str
+    tag: str
     price: int
     rating: int
     category: str

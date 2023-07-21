@@ -47,7 +47,6 @@ export default function AdminLoginPage() {
                 }
             });
             if (res.data.user) {
-                console.log(res.data.user);
                 setResponse("Login successful! You're being redirected.")
                 adminLogin(res.data.access_token, res.data.user, res.data.user.id)
                 router.push("/admin/dashboard");

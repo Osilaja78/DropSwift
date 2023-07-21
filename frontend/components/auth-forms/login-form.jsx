@@ -56,7 +56,6 @@ export default function LoginForm() {
             }
             setLoading(false);
         } catch (err) {
-            console.log(err);
             setError(err.response.data.detail);
             setLoading(false);
         }
@@ -76,7 +75,6 @@ export default function LoginForm() {
             });
             if (res.data.user) {
                 setResponse("Login successful! You're being redirected.");
-                console.log(res.data);
                 login(res.data.access_token, res.data.user, res.data.user.id);
                 router.push("/dashboard");
             }
@@ -85,7 +83,6 @@ export default function LoginForm() {
             }
             setLoading(false);
         } catch (err) {
-            console.log(err.response.data.detail);
             setError(err.response.data.detail);
             setLoading(false);
         }
@@ -93,7 +90,6 @@ export default function LoginForm() {
 
     const handleGoogleSignInError = (err) => {
         setLoading(false);
-        console.log(err);
         setError("Something went wrong! Please try again.")
     };
     

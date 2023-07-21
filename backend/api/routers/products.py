@@ -60,7 +60,7 @@ async def admin_add_product(request: schemas.Products, db: Session = Depends(get
     
     try:
         product = models.Products(product_id=str(uuid4()), product_name=request.product_name,
-                    description=request.description, price=request.price, rating=request.rating,
+                    description=request.description, tag=request.tag, price=request.price, rating=request.rating,
                     category=request.category, main_image_url=request.main_image_url, image_one_url=request.image_one_url,
                     image_two_url=request.image_two_url, image_three_url=request.image_three_url,
                     date_added=datetime.utcnow())
