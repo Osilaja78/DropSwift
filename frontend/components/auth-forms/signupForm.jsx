@@ -96,7 +96,6 @@ export default function SignupForm() {
                 setResponse(res.data.message);
             }
             setLoading(false);
-            console.log(res)
         } catch (err) {
             console.log(err)
             setError(err.response.data.detail);

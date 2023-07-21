@@ -25,7 +25,7 @@ app.add_middleware(
 )
 
 # Initialize database migration
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
 
 # Index page
 @app.get('/')
